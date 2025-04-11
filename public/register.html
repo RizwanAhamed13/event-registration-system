@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 500px;
+      margin: 40px auto;
+    }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 100%; padding: 8px; margin-top: 4px; }
+    button { margin-top: 20px; padding: 10px 20px; }
+    #infoBox {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Register</h2>
+  <form id="registerForm">
+    <label>Name <input type="text" name="name" required></label>
+    <label>Email <input type="email" name="email" required></label>
+    <label>Password <input type="password" name="password" required></label>
+    <label>Roll Number <input type="text" name="roll_number" required></label>
+    <label>Section <input type="text" name="section" required></label>
+    <label>Department <input type="text" name="department" required></label>
+    <label>Referral Roll Number (optional) <input type="text" name="referral_roll_no"></label>
+
+    <label>Enter Team Code (to join):
+      <input type="text" name="team_code" id="team_code">
+    </label>
+    <label>Or Create a New Team:
+      <input type="text" name="team_name" id="team_name">
+    </label>
+
+    <button type="submit">Register</button>
+    <p id="msg" style="margin-top: 10px;"></p>
+  </form>
+
+  <div id="infoBox"></div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const msg = document.getElementById('msg');
+    const infoBox = document.getElementById('infoBox');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = "";
+      infoBox.style.display = "none";
+      infoBox.innerHTML = "";
+
+      const formData = new FormData(form);
+      const body = {};
+      formData.forEach((v, k) => { if (v) body[k] = v });
+
+      // Basic email validation
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
+        msg.textContent = "❌ Invalid email format.";
+        return;
+      }
+
+      if (!body.team_code && !body.team_name) {
+        msg.textContent = "❌ Please enter a team code or create a team.";
+        return;
+      }
+
+      if (body.team_code && body.team_name) {
+        msg.textContent = "❌ Please choose only one: team code or team name.";
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:5050/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          msg.textContent = `❌ ${data.msg || data.error}`;
+          return;
+        }
+
+        msg.textContent = `✅ ${data.msg}`;
+
+        // Show team info
+        if (data.team_leader || data.members || data.team_code) {
+          infoBox.style.display = "block";
+
+          if (data.team_code) {
+            infoBox.innerHTML = `<b>Your Team Code:</b> ${data.team_code}`;
+          }
+
+          if (data.team_leader) {
+            infoBox.innerHTML += `<p><b>Team Leader:</b> ${data.team_leader}</p>`;
+          }
+
+          if (data.members?.length > 0) {
+            infoBox.innerHTML += `<p><b>Team Members:</b><ul>${data.members.map(m => `<li>${m.name} (${m.roll_number})</li>`).join('')}</ul></p>`;
+          }
+        }
+
+        form.reset();
+
+      } catch (err) {
+        msg.textContent = "❌ Failed to connect to server.";
+      }
+    });
+  </script>
+</body>
+</html>
