@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0055a4;
+            --secondary-color: #2c73d2;
+            --accent-color: #64b5f6;
+            --light-color: #f5f9ff;
+            --dark-color: #1a2a3a;
+            --text-color: #333;
+            --text-muted: #6c757d;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --border-radius: 10px;
+            --card-shadow: 0 8px 20px rgba(0, 85, 164, 0.1);
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Wave Shining Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.5) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            animation: waveShine 2.5s infinite linear;
+            transform: skewX(-20deg);
+        }
+
+        .dashboard-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.3) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            animation: waveShine 3.5s infinite linear 0.5s;
+            transform: skewX(-20deg);
+        }
+
+        @keyframes waveShine {
+            0% { transform: translateX(-150%) skewX(-20deg); }
+            100% { transform: translateX(150%) skewX(-20deg); }
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            height: 50px;
+            transition: var(--transition);
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.8));
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .welcome-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        #welcomeUsername, #username {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Enhanced Glowing Role Badge */
+        .role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(0, 85, 164, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 5px rgba(0, 85, 164, 0.3);
+            }
+            to {
+                box-shadow: 0 0 15px rgba(0, 85, 164, 0.6);
+            }
+        }
+
+        .role-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 85, 164, 0.15);
+        }
+
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary-color);
+        }
+
+        .status-card.team-card::before {
+            background: var(--secondary-color);
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .card-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+        }
+
+        .status-indicator .approved {
+            color: var(--success-color);
+            font-weight: 500;
+        }
+
+        .status-indicator .pending {
+            color: var(--warning-color);
+            font-weight: 500;
+        }
+
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 85, 164, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .user-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        /* Shining Logout Button */
+        .logout-btn {
+            background: none;
+            border: 2px solid var(--danger-color);
+            color: var(--danger-color);
+            padding: 0.6rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: logoutShine 3s infinite;
+        }
+
+        @keyframes logoutShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .logout-btn:hover {
+            background-color: var(--danger-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2);
+        }
+
+        .logout-btn i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logout-btn .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.7);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .logo-container {
+                margin-bottom: 1rem;
+            }
+
+            .logo {
+                height: 40px;
+            }
+
+            .welcome-section {
+                padding: 1.5rem;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+
+            .status-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-container {
+                padding: 1rem 0.75rem;
+            }
+
+            .welcome-section {
+                padding: 1.25rem;
+            }
+
+            .status-card {
+                padding: 1.25rem;
+            }
+
+            .user-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logos -->
+    <header class="dashboard-header">
+        <div class="logo-container">
+            <img src="logo3.png" alt="College Logo" class="logo">
+            <img src="ig.png" alt="Event Logo" class="logo" style="height: 70px;">
+        </div>
+    </header>
+
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title">
+                Welcome, <span id="welcomeUsername">...</span>
+            </h1>
+            <div class="role-badge">
+                Role: <span id="role">...</span>
+            </div>
+        </section>
+
+        <!-- Status Cards -->
+        <div class="status-cards">
+            <!-- Approval Status Card -->
+            <div class="status-card">
+                <div class="card-title">
+                    <i class="fas fa-check-circle"></i>
+                    Approval Status
+                </div>
+                <div class="card-value status-indicator">
+                    <span id="approval">Checking...</span>
+                </div>
+            </div>
+
+            <!-- Team Status Card -->
+            <div class="status-card team-card">
+                <div class="card-title">
+                    <i class="fas fa-users"></i>
+                    Team Information
+                </div>
+                <div class="card-value">
+                    <span id="team">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Actions -->
+        <div class="user-actions">
+            <button id="logoutBtn" class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </div>
+    </div>
+
+    <script>
+        
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        const token = localStorage.getItem('token');
+
+        if (!user || !token) {
+            alert("You are not logged in!");
+            window.location.href = "login.html";
+        }
+
+        document.getElementById('welcomeUsername').textContent = user.name;
+        document.getElementById('username').textContent = user.name;
+        document.getElementById('role').textContent = user.role;
+
+        // Fetch approval and team info
+        async function loadDashboard() {
+            try {
+                const res = await fetch(`http://localhost:5050/api/dashboard/${user.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    document.getElementById('approval').textContent = "❌ Failed to load data";
+                    return;
+                }
+
+                document.getElementById('approval').textContent = data.is_approved ? "✅ Approved" : "⏳ Pending Approval";
+                document.getElementById('team').textContent = data.team ? `${data.team.name} (Code: ${data.team.code})` : "Not in a team";
+
+            } catch (err) {
+                document.getElementById('approval').textContent = "❌ Error loading data";
+            }
+        }
+
+        loadDashboard();
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = "login.html";
+        }
+
+        
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            
+            
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            this.appendChild(ripple);
+            
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+            
+            
+            setTimeout(logout, 300);
+        });
+    </script>
+</body>
+</html>
