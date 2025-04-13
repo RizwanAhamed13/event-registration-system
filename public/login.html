@@ -1,71 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
-  <style>
-    body { font-family: Arial; max-width: 400px; margin: 50px auto; }
-    label { display: block; margin-top: 10px; }
-    input { width: 100%; padding: 8px; margin-top: 4px; }
-    button { margin-top: 20px; padding: 10px 20px; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Login Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style2.css">
 </head>
 <body>
-  <h2>Login</h2>
-  <form id="loginForm">
-    <label>Email <input type="email" name="email" required></label>
-    <label>Password <input type="password" name="password" required></label>
-    <button type="submit">Login</button>
-    <p id="msg"></p>
-  </form>
+  <div id="particles-js"></div>
 
-  <script>
-    const form = document.getElementById('loginForm');
-    const msg = document.getElementById('msg');
+  <div class="theme-toggle">
+    <input type="checkbox" id="theme-switch">
+    <label for="theme-switch" class="toggle-label">
+      <i class="fas fa-moon"></i>
+      <i class="fas fa-sun"></i>
+      <div class="toggle-ball"></div>
+    </label>
+  </div>
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      msg.textContent = "";
+  <div class="container">
+    <div class="login-container">
+      <div class="logo-container">
+        <div class="logo">
+          <div class="logo-animation">
+            <div class="college-logo">
+              <img src="ig.png"  style="width: 120px;
+              height: 50px;">
+            </div>
+          </div>
+        </div>
+        <h1 class="college-name">Login Portal</h1>
+      </div>
 
-      const email = form.email.value;
-      const password = form.password.value;
+      <div class="login-form-container">
+        <div class="welcome-text">
+          <h2>Welcome Back</h2>
+                  </div>
 
-      try {
-        const res = await fetch('http://localhost:5050/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
+        <form id="loginForm">
+          <div class="input-group">
+            <div class="input-icon"><i class="fas fa-envelope"></i></div>
+            <div class="input-field">
+              <input type="email" name="email" id="email" required autocomplete="off">
+              <label for="email">Email</label>
+              <div class="input-highlight"></div>
+            </div>
+          </div>
 
-        const data = await res.json();
+          <div class="input-group">
+            <div class="input-icon"><i class="fas fa-lock"></i></div>
+            <div class="input-field">
+              <input type="password" name="password" id="password" required autocomplete="off">
+              <label for="password">Password</label>
+              <div class="input-highlight"></div>
+              <div class="password-toggle">
+                <i class="fas fa-eye-slash"></i>
+              </div>
+              <div class="password-strength"></div>
+            </div>
+          </div>
 
-        if (!res.ok) {
-          msg.textContent = `❌ ${data.msg || 'Login failed'}`;
-          return;
-        }
+          <div class="options">
+            <div class="remember-me">
+              <input type="checkbox" id="remember">
+              <label for="remember">Remember me</label>
+            </div>
+            <a href="https://wa.me/917708959715" class="forgot-password">Forgot Password?</a>
+          </div>
 
-        // Store token & user
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+          <button type="submit" class="login-btn">
+            <span class="btn-text">Login</span>
+            <span class="btn-loader">
+              <i class="fas fa-circle-notch fa-spin"></i>
+            </span>
+          </button>
 
-        msg.textContent = `✅ Logged in as ${data.user.name}`;
+          <p id="msg" class="message"></p>
+        </form>
 
-        // Redirect based on role
-        setTimeout(() => {
-          if (data.user.role === 'admin') {
-            window.location.href = 'admin.html';
-          } else if (data.user.role === 'moderator') {
-            window.location.href = 'moderator.html';
-          } else {
-            window.location.href = 'dashboard.html';
-          }
-        }, 1000);
+       
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
-      } catch (err) {
-        msg.textContent = '❌ Server error';
-      }
-    });
-  </script>
+  <!-- Main Script -->
+  <script src="script2.js"></script>
 </body>
 </html>
