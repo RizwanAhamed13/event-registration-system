@@ -259,27 +259,41 @@ function initFormHandling() {
               submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
               // Mock successful response for demo
-              setTimeout(() => {
-                  // Show success message and hide form
-                  registrationForm.style.display = 'none';
-                  successMessage.style.display = 'block';
-
-                  // Show team info
-                  infoBox.style.display = "block";
-                  infoBox.innerHTML = '';
-
-                  if (body.team_name) {
-                      infoBox.innerHTML += `<p><b>Your Team Code:</b> ${Math.random().toString(36).substring(2, 8).toUpperCase()}</p>`;
-                      infoBox.innerHTML += `<p><b>Team Name:</b> ${body.team_name}</p>`;
-                      infoBox.innerHTML += `<p><b>Team Leader:</b> ${body.name}</p>`;
-                  } else if (body.team_code) {
-                      infoBox.innerHTML += `<p><b>Joined Team:</b> ${body.team_code}</p>`;
-                      infoBox.innerHTML += `<p><b>Member:</b> ${body.name}</p>`;
-                  }
-
-                  // Animate success message
-                  successMessage.querySelector('i').classList.add('animated');
-              }, 1500);
+              const res = await fetch("http://localhost:5050/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+              });
+              
+              const data = await res.json();
+              
+              if (!res.ok) {
+                showError(document.querySelector('.submit-button'), "❌ " + (data.msg || data.error || 'Registration failed.'));
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Registration';
+                return;
+              }
+              
+              // Show success message and hide form
+              registrationForm.style.display = 'none';
+              successMessage.style.display = 'block';
+              
+              // Show team info
+              infoBox.style.display = "block";
+              infoBox.innerHTML = '';
+              
+              if (data.team_code) {
+                infoBox.innerHTML += `<p><b>Your Team Code:</b> ${data.team_code}</p>`;
+              }
+              if (data.team_leader) {
+                infoBox.innerHTML += `<p><b>Team Leader:</b> ${data.team_leader}</p>`;
+              }
+              if (data.members) {
+                infoBox.innerHTML += `<p><b>Team Members:</b><ul>${data.members.map(m => `<li>${m.name}</li>`).join('')}</ul></p>`;
+              }
+              
+              // Animate success message
+              successMessage.querySelector('i')?.classList.add('animated');
 
           } catch (err) {
               showError(document.querySelector('.submit-button'), "❌ Failed to connect to server.");

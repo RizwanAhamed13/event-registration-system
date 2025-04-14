@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial; max-width: 1000px; margin: 40px auto; }
+    input, select { width: 100%; padding: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 8px; border: 1px solid #ccc; }
+    th { background: #eee; cursor: pointer; }
+    button { padding: 6px 10px; margin: 2px; cursor: pointer; }
+    .top-bar { display: flex; gap: 10px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Admin Panel</h2>
+  <div class="top-bar">
+    <input type="text" id="search" placeholder="🔍 Search..." oninput="loadUsers()">
+    <select id="roleFilter" onchange="loadUsers()">
+      <option value="">All Roles</option>
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+      <option value="moderator">Moderator</option>
+    </select>
+    <button onclick="loadUsers()">🔄 Refresh</button>
+    <button onclick="exportCSV()">📤 Export CSV</button>
+  </div>
+
+  <table id="user-table">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">ID</th>
+        <th onclick="sortTable(1)">Name</th>
+        <th onclick="sortTable(2)">Email</th>
+        <th onclick="sortTable(3)">Roll No</th>
+        <th onclick="sortTable(4)">Section</th>
+        <th onclick="sortTable(5)">Department</th>
+        <th onclick="sortTable(6)">Referral</th>
+        <th onclick="sortTable(7)">Role</th>
+        <th onclick="sortTable(8)">Approved</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const baseURL = 'http://localhost:5050/api/admin';
+
+    // ✅ Role-based page protection
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user || user.role !== 'admin') {
+      alert('❌ Unauthorized access. Redirecting to login...');
+      window.location.href = 'login.html';
+    }
+
+    async function loadUsers() {
+      const token = localStorage.getItem('token');
+      if (!token) return alert('Unauthorized');
+
+      const search = document.getElementById('search').value.toLowerCase();
+      const role = document.getElementById('roleFilter').value;
+
+      const res = await fetch(`${baseURL}/users`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      let users = await res.json();
+
+      if (role) users = users.filter(u => u.role === role);
+      if (search) {
+        users = users.filter(u =>
+          u.name.toLowerCase().includes(search) ||
+          u.email.toLowerCase().includes(search) ||
+          u.roll_number.toLowerCase().includes(search)
+        );
+      }
+
+      const tbody = document.querySelector('#user-table tbody');
+      tbody.innerHTML = '';
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${user.id}</td>
+          <td><input value="${user.name}" data-id="${user.id}" data-field="name"></td>
+          <td><input value="${user.email}" data-id="${user.id}" data-field="email"></td>
+          <td><input value="${user.roll_number}" data-id="${user.id}" data-field="roll_number"></td>
+          <td><input value="${user.section}" data-id="${user.id}" data-field="section"></td>
+          <td><input value="${user.department}" data-id="${user.id}" data-field="department"></td>
+          <td><input value="${user.referral_roll_no || ''}" data-id="${user.id}" data-field="referral_roll_no"></td>
+          <td>
+            <select data-id="${user.id}" data-field="role">
+              <option ${user.role === 'user' ? 'selected' : ''}>user</option>
+              <option ${user.role === 'admin' ? 'selected' : ''}>admin</option>
+              <option ${user.role === 'moderator' ? 'selected' : ''}>moderator</option>
+            </select>
+          </td>
+          <td><input type="checkbox" data-id="${user.id}" data-field="is_approved" ${user.is_approved ? 'checked' : ''}></td>
+          <td>
+            <button onclick="saveUser('${user.id}')">💾</button>
+            <button onclick="deleteUser('${user.id}')">🗑</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function saveUser(id) {
+      const token = localStorage.getItem('token');
+      const fields = document.querySelectorAll(`[data-id='${id}']`);
+      const body = {};
+      fields.forEach(f => {
+        body[f.dataset.field] = f.type === 'checkbox' ? f.checked : f.value;
+      });
+
+      const res = await fetch(`${baseURL}/update-user/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      alert(data.msg || 'Saved');
+      loadUsers();
+    }
+
+    async function deleteUser(id) {
+      const token = localStorage.getItem('token');
+      if (!confirm('Are you sure you want to delete this user?')) return;
+
+      const res = await fetch(`${baseURL}/delete-user/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const data = await res.json();
+      alert(data.msg || 'Deleted');
+      loadUsers();
+    }
+
+    function sortTable(colIndex) {
+      const table = document.getElementById('user-table');
+      const rows = Array.from(table.rows).slice(1);
+      const sorted = rows.sort((a, b) =>
+        a.cells[colIndex].textContent.localeCompare(b.cells[colIndex].textContent)
+      );
+      sorted.forEach(row => table.appendChild(row));
+    }
+
+    function exportCSV() {
+      const rows = [['ID','Name','Email','Roll','Section','Department','Referral','Role','Approved']];
+      document.querySelectorAll('#user-table tbody tr').forEach(row => {
+        const data = Array.from(row.querySelectorAll('td')).map(cell => {
+          const input = cell.querySelector('input, select');
+          if (input) {
+            return input.type === 'checkbox' ? input.checked : input.value;
+          } else {
+            return cell.textContent.trim();
+          }
+        });
+        rows.push(data);
+      });
+
+      const csv = rows.map(r => r.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'users.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    window.onload = loadUsers;
+  </script>
+</body>
+</html>

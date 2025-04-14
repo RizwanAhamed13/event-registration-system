@@ -201,45 +201,46 @@ function initFormEvents() {
 
     try {
       // Simulate API call with timeout
-      await new Promise(resolve => setTimeout(resolve, 1500));
+          // Make the actual API call to your backend login endpoint
+    const response = await fetch('http://localhost:5050/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      // Simulate server response
-      const response = await mockServerCall(email, password);
+    const data = await response.json();
 
-      // Remove loading state
-      loginBtn.classList.remove('loading');
+    // Remove loading state
+    loginBtn.classList.remove('loading');
 
-      if (!response.ok) {
-        msg.textContent = `❌ ${response.msg}`;
-        msg.classList.add('error');
-        // Shake animation on error
-        loginBtn.classList.add('shake');
-        setTimeout(() => loginBtn.classList.remove('shake'), 500);
-        return;
+    if (!response.ok) {
+      msg.textContent = `❌ ${data.msg || 'Login failed'}`;
+      msg.classList.add('error');
+      loginBtn.classList.add('shake');
+      setTimeout(() => loginBtn.classList.remove('shake'), 500);
+      return;
+    }
+
+    msg.textContent = `✅ Logged in as ${data.user.name}`;
+    msg.classList.add('success');
+
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+
+    loginBtn.innerHTML = '<i class="fas fa-check"></i>';
+    loginBtn.classList.add('success');
+
+    setTimeout(() => {
+      if (data.user.role === 'admin') {
+        window.location.href = 'admin.html';
+      } else if (data.user.role === 'moderator') {
+        window.location.href = 'moderator.html';
+      } else {
+        window.location.href = 'dashboard.html';
       }
-
-      // Success message
-      msg.textContent = `✅ Logged in as ${response.user.name}`;
-      msg.classList.add('success');
-
-      // Store token & user
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-
-      // Success animation
-      loginBtn.innerHTML = '<i class="fas fa-check"></i>';
-      loginBtn.classList.add('success');
-
-      
-      setTimeout(() => {
-        if (response.user.role === 'admin') {
-          window.location.href = 'admin.html';
-        } else if (response.user.role === 'moderator') {
-          window.location.href = 'moderator.html';
-        } else {
-          window.location.href = 'dashboard.html';
-        }
-      }, 1000);
+    }, 1000);
 
     } catch (err) {
       loginBtn.classList.remove('loading');

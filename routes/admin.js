@@ -3,34 +3,53 @@ const router = express.Router();
 const pool = require('../db');
 const { verifyToken, requireRole } = require('../middleware/auth');
 
-// ✅ Approve Users
-router.get('/pending-users', verifyToken, requireRole('admin'), async (req, res) => {
-  const result = await pool.query(`SELECT id, name, email FROM users WHERE is_approved = false`);
-  res.json(result.rows);
+// ✅ Get all users
+router.get('/users', verifyToken, requireRole('admin'), async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT * FROM users ORDER BY name ASC`);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Failed to fetch users' });
+  }
 });
 
-router.post('/approve-user', verifyToken, requireRole('admin'), async (req, res) => {
-  const { user_id } = req.body;
-  await pool.query(`UPDATE users SET is_approved = true WHERE id = $1`, [user_id]);
-  res.json({ msg: 'User approved' });
+// ✅ Update user info
+router.put('/update-user/:id', verifyToken, requireRole('admin'), async (req, res) => {
+  const { id } = req.params;
+  const {
+    name, email, role, roll_number, section,
+    department, referral_roll_no, is_approved
+  } = req.body;
+
+  try {
+    await pool.query(
+      `UPDATE users SET name = $1, email = $2, role = $3, roll_number = $4,
+       section = $5, department = $6, referral_roll_no = $7, is_approved = $8
+       WHERE id = $9`,
+      [name, email, role, roll_number, section, department, referral_roll_no, is_approved, id]
+    );
+
+    res.json({ msg: 'User updated successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Failed to update user' });
+  }
 });
 
-// ✅ Approve Event Registrations
-router.get('/pending-events', verifyToken, requireRole('admin'), async (req, res) => {
-  const result = await pool.query(
-    `SELECT er.id, er.team_id, er.event_id, t.name AS team_name, e.name AS event_name
-     FROM event_registrations er
-     JOIN teams t ON er.team_id = t.id
-     JOIN events e ON er.event_id = e.id
-     WHERE er.approved = false`
-  );
-  res.json(result.rows);
-});
+// ✅ Delete a user
+router.delete('/delete-user/:id', verifyToken, requireRole('admin'), async (req, res) => {
+  const { id } = req.params;
 
-router.post('/approve-event', verifyToken, requireRole('admin'), async (req, res) => {
-  const { registration_id } = req.body;
-  await pool.query(`UPDATE event_registrations SET approved = true WHERE id = $1`, [registration_id]);
-  res.json({ msg: 'Event registration approved' });
+  try {
+    await pool.query(`DELETE FROM team_members WHERE user_id = $1`, [id]);
+    await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
+
+    res.json({ msg: 'User deleted successfully' });
+  } catch (err) {
+    console.error('Delete error:', err);
+    res.status(500).json({ msg: 'Delete failed' });
+  }
 });
 
 module.exports = router;

@@ -87,4 +87,47 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// LOGIN
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const q = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
+    const user = q.rows[0];
+
+    if (!user) {
+      return res.status(401).json({ msg: 'Invalid credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ msg: 'Invalid credentials' });
+    }
+
+    if (!user.is_approved) {
+      return res.status(403).json({ msg: 'Not approved yet' });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router;
