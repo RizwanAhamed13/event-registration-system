@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <title>Admin Dashboard</title>
   <style>
-    body { font-family: Arial; max-width: 1000px; margin: 40px auto; }
+    body { font-family: Arial; max-width: 1200px; margin: 40px auto; }
     input, select { width: 100%; padding: 6px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
     th, td { padding: 8px; border: 1px solid #ccc; }
     th { background: #eee; cursor: pointer; }
     button { padding: 6px 10px; margin: 2px; cursor: pointer; }
@@ -31,16 +31,19 @@
   <table id="user-table">
     <thead>
       <tr>
-        <th onclick="sortTable(0)">ID</th>
-        <th onclick="sortTable(1)">Name</th>
-        <th onclick="sortTable(2)">Email</th>
-        <th onclick="sortTable(3)">Roll No</th>
-        <th onclick="sortTable(4)">Section</th>
-        <th onclick="sortTable(5)">Department</th>
-        <th onclick="sortTable(6)">Referral</th>
-        <th onclick="sortTable(7)">Role</th>
-        <th onclick="sortTable(8)">Approved</th>
-        <th onclick="sortTable(9)">College</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Roll No</th>
+        <th>Section</th>
+        <th>Department</th>
+        <th>Referral</th>
+        <th>Role</th>
+        <th>Approved</th>
+        <th>College</th>
+        <th>Team Code</th>
+        <th>Team Name</th>
+        <th>Team Leader</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -49,18 +52,14 @@
 
   <script>
     const baseURL = 'http://localhost:5050/api/admin';
-
-    // ✅ Role protection
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (!user || user.role !== 'admin') {
-      alert('❌ Unauthorized access. Redirecting to login...');
+      alert('❌ Unauthorized access. Redirecting...');
       window.location.href = 'login.html';
     }
 
     async function loadUsers() {
       const token = localStorage.getItem('token');
-      if (!token) return alert('Unauthorized');
-
       const search = document.getElementById('search').value.toLowerCase();
       const role = document.getElementById('roleFilter').value;
 
@@ -98,11 +97,14 @@
             </select>
           </td>
           <td><input type="checkbox" data-id="${user.id}" data-field="is_approved" ${user.is_approved ? 'checked' : ''}></td>
+          <td><input value="${user.college_name || ''}" data-id="${user.id}" data-field="college_name"></td>
+          <td>${user.team_code || '-'}</td>
+          <td>${user.team_name || '-'}</td>
+          <td>${user.team_leader || '-'}</td>
           <td>
             <button onclick="saveUser('${user.id}')">💾</button>
             <button onclick="deleteUser('${user.id}')">🗑</button>
           </td>
-          <td><input value="${user.college_name || ''}" data-id="${user.id}" data-field="college_name"></td>
         `;
         tbody.appendChild(row);
       });
@@ -132,7 +134,7 @@
 
     async function deleteUser(id) {
       const token = localStorage.getItem('token');
-      if (!confirm('Are you sure you want to delete this user?')) return;
+      if (!confirm('Are you sure?')) return;
 
       const res = await fetch(`${baseURL}/delete-user/${id}`, {
         method: 'DELETE',
@@ -154,7 +156,7 @@
     }
 
     function exportCSV() {
-      const rows = [['ID','Name','Email','Roll','Section','Department','Referral','Role','Approved']];
+      const rows = [['ID','Name','Email','Roll','Section','Department','Referral','Role','Approved','College','Team Code','Team Name','Team Leader']];
       document.querySelectorAll('#user-table tbody tr').forEach(row => {
         const data = Array.from(row.querySelectorAll('td')).map(cell => {
           const input = cell.querySelector('input, select');

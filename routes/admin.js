@@ -3,10 +3,20 @@ const router = express.Router();
 const pool = require('../db');
 const { verifyToken, requireRole } = require('../middleware/auth');
 
-// ✅ Get all users
+// ✅ Get all users with team and college info
 router.get('/users', verifyToken, requireRole('admin'), async (req, res) => {
   try {
-    const result = await pool.query(`SELECT * FROM users ORDER BY name ASC`);
+    const result = await pool.query(`
+      SELECT 
+        u.*,
+        t.name AS team_name,
+        t.code AS team_code,
+        (SELECT name FROM users WHERE id = t.leader_id) AS team_leader
+      FROM users u
+      LEFT JOIN team_members tm ON u.id = tm.user_id
+      LEFT JOIN teams t ON tm.team_id = t.id
+      ORDER BY u.name ASC
+    `);
     res.json(result.rows);
   } catch (err) {
     console.error('Error fetching users:', err);
@@ -14,7 +24,7 @@ router.get('/users', verifyToken, requireRole('admin'), async (req, res) => {
   }
 });
 
-// ✅ Update user info
+// ✅ Update user info including college_name
 router.put('/update-user/:id', verifyToken, requireRole('admin'), async (req, res) => {
   const { id } = req.params;
   const {
@@ -25,7 +35,8 @@ router.put('/update-user/:id', verifyToken, requireRole('admin'), async (req, re
     section,
     department,
     referral_roll_no,
-    is_approved
+    is_approved,
+    college_name
   } = req.body;
 
   try {
@@ -38,9 +49,10 @@ router.put('/update-user/:id', verifyToken, requireRole('admin'), async (req, re
            section = $5,
            department = $6,
            referral_roll_no = $7,
-           is_approved = $8
-       WHERE id = $9`,
-      [name, email, role, roll_number, section, department, referral_roll_no, is_approved, id]
+           is_approved = $8,
+           college_name = $9
+       WHERE id = $10`,
+      [name, email, role, roll_number, section, department, referral_roll_no, is_approved, college_name, id]
     );
 
     res.json({ msg: 'User updated successfully' });
@@ -55,9 +67,7 @@ router.delete('/delete-user/:id', verifyToken, requireRole('admin'), async (req,
   const { id } = req.params;
 
   try {
-    // First remove from team_members if exists
     await pool.query(`DELETE FROM team_members WHERE user_id = $1`, [id]);
-    // Then delete user
     await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
 
     res.json({ msg: 'User deleted successfully' });

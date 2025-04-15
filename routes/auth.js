@@ -17,7 +17,8 @@ router.post('/register', async (req, res) => {
     department,
     referral_roll_no,
     team_code,
-    team_name
+    team_name,
+    college_name
   } = req.body;
 
   // Validate email format
@@ -41,7 +42,7 @@ router.post('/register', async (req, res) => {
     const newUser = await pool.query(
       `INSERT INTO users (name, email, password, roll_number, section, department, referral_roll_no)
        VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-      [name, email, hashed, roll_number, section, department, referral_roll_no]
+      [name, email, hashed, roll_number, section, department, referral_roll_no,college_name]
     );
     const user_id = newUser.rows[0].id;
 
