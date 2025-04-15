@@ -7,6 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const generateCode = () => uuidv4().split('-')[0];
 
+// ✅ REGISTER
 router.post('/register', async (req, res) => {
   const {
     name,
@@ -16,16 +17,15 @@ router.post('/register', async (req, res) => {
     section,
     department,
     referral_roll_no,
+    phone,
     team_code,
     team_name,
     college_name
   } = req.body;
 
-  // Validate email format
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) return res.status(400).json({ msg: 'Invalid email format' });
 
-  // Ensure team info
   if (!team_code && !team_name) {
     return res.status(400).json({ msg: 'Enter a team code or create a team name' });
   }
@@ -34,23 +34,23 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    // Check for duplicate email or roll number
     const check = await pool.query(`SELECT * FROM users WHERE email = $1 OR roll_number = $2`, [email, roll_number]);
     if (check.rows.length > 0) return res.status(400).json({ msg: 'Email or roll number already exists' });
 
     const hashed = await bcrypt.hash(password, 10);
+
     const newUser = await pool.query(
-      `INSERT INTO users (name, email, password, roll_number, section, department, referral_roll_no)
-       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-      [name, email, hashed, roll_number, section, department, referral_roll_no,college_name]
+      `INSERT INTO users (name, email, password, roll_number, section, department, referral_roll_no, college_name, phone)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+      [name, email, hashed, roll_number, section, department, referral_roll_no, college_name, phone]
     );
+
     const user_id = newUser.rows[0].id;
 
     if (team_code) {
       const team = await pool.query(`SELECT * FROM teams WHERE code = $1`, [team_code]);
       if (team.rows.length === 0) return res.status(400).json({ msg: 'Invalid team code' });
 
-      // Fetch members and leader
       const members = await pool.query(
         `SELECT u.name, u.roll_number FROM team_members tm JOIN users u ON tm.user_id = u.id WHERE tm.team_id = $1`,
         [team.rows[0].id]
@@ -88,7 +88,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// LOGIN
+// ✅ LOGIN
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -96,18 +96,12 @@ router.post('/login', async (req, res) => {
     const q = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
     const user = q.rows[0];
 
-    if (!user) {
-      return res.status(401).json({ msg: 'Invalid credentials' });
-    }
+    if (!user) return res.status(401).json({ msg: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ msg: 'Invalid credentials' });
-    }
+    if (!isMatch) return res.status(401).json({ msg: 'Invalid credentials' });
 
-    if (!user.is_approved) {
-      return res.status(403).json({ msg: 'Not approved yet' });
-    }
+    if (!user.is_approved) return res.status(403).json({ msg: 'Not approved yet' });
 
     const token = jwt.sign(
       { id: user.id, role: user.role },

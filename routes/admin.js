@@ -24,12 +24,13 @@ router.get('/users', verifyToken, requireRole('admin'), async (req, res) => {
   }
 });
 
-// ✅ Update user info including college_name
+// ✅ Update user info including phone and college_name
 router.put('/update-user/:id', verifyToken, requireRole('admin'), async (req, res) => {
   const { id } = req.params;
   const {
     name,
     email,
+    phone,
     role,
     roll_number,
     section,
@@ -44,15 +45,16 @@ router.put('/update-user/:id', verifyToken, requireRole('admin'), async (req, re
       `UPDATE users
        SET name = $1,
            email = $2,
-           role = $3,
-           roll_number = $4,
-           section = $5,
-           department = $6,
-           referral_roll_no = $7,
-           is_approved = $8,
-           college_name = $9
-       WHERE id = $10`,
-      [name, email, role, roll_number, section, department, referral_roll_no, is_approved, college_name, id]
+           phone = $3,
+           role = $4,
+           roll_number = $5,
+           section = $6,
+           department = $7,
+           referral_roll_no = $8,
+           is_approved = $9,
+           college_name = $10
+       WHERE id = $11`,
+      [name, email, phone, role, roll_number, section, department, referral_roll_no, is_approved, college_name, id]
     );
 
     res.json({ msg: 'User updated successfully' });

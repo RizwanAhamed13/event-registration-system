@@ -34,6 +34,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Email</th>
+        <th>Phone</th>
         <th>Roll No</th>
         <th>Section</th>
         <th>Department</th>
@@ -85,6 +86,7 @@
           <td>${user.id}</td>
           <td><input value="${user.name}" data-id="${user.id}" data-field="name"></td>
           <td><input value="${user.email}" data-id="${user.id}" data-field="email"></td>
+          <td><input value="${user.phone || ''}" data-id="${user.id}" data-field="phone"></td>
           <td><input value="${user.roll_number}" data-id="${user.id}" data-field="roll_number"></td>
           <td><input value="${user.section}" data-id="${user.id}" data-field="section"></td>
           <td><input value="${user.department}" data-id="${user.id}" data-field="department"></td>
@@ -156,7 +158,7 @@
     }
 
     function exportCSV() {
-      const rows = [['ID','Name','Email','Roll','Section','Department','Referral','Role','Approved','College','Team Code','Team Name','Team Leader']];
+      const rows = [['ID','Name','Email','Phone','Roll','Section','Department','Referral','Role','Approved','College','Team Code','Team Name','Team Leader']];
       document.querySelectorAll('#user-table tbody tr').forEach(row => {
         const data = Array.from(row.querySelectorAll('td')).map(cell => {
           const input = cell.querySelector('input, select');
