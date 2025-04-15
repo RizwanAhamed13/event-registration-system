@@ -9,7 +9,7 @@ router.get('/users', verifyToken, requireRole('admin'), async (req, res) => {
     const result = await pool.query(`SELECT * FROM users ORDER BY name ASC`);
     res.json(result.rows);
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching users:', err);
     res.status(500).json({ msg: 'Failed to fetch users' });
   }
 });
@@ -18,21 +18,34 @@ router.get('/users', verifyToken, requireRole('admin'), async (req, res) => {
 router.put('/update-user/:id', verifyToken, requireRole('admin'), async (req, res) => {
   const { id } = req.params;
   const {
-    name, email, role, roll_number, section,
-    department, referral_roll_no, is_approved
+    name,
+    email,
+    role,
+    roll_number,
+    section,
+    department,
+    referral_roll_no,
+    is_approved
   } = req.body;
 
   try {
     await pool.query(
-      `UPDATE users SET name = $1, email = $2, role = $3, roll_number = $4,
-       section = $5, department = $6, referral_roll_no = $7, is_approved = $8
+      `UPDATE users
+       SET name = $1,
+           email = $2,
+           role = $3,
+           roll_number = $4,
+           section = $5,
+           department = $6,
+           referral_roll_no = $7,
+           is_approved = $8
        WHERE id = $9`,
       [name, email, role, roll_number, section, department, referral_roll_no, is_approved, id]
     );
 
     res.json({ msg: 'User updated successfully' });
   } catch (err) {
-    console.error(err);
+    console.error('Error updating user:', err);
     res.status(500).json({ msg: 'Failed to update user' });
   }
 });
@@ -42,7 +55,9 @@ router.delete('/delete-user/:id', verifyToken, requireRole('admin'), async (req,
   const { id } = req.params;
 
   try {
+    // First remove from team_members if exists
     await pool.query(`DELETE FROM team_members WHERE user_id = $1`, [id]);
+    // Then delete user
     await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
 
     res.json({ msg: 'User deleted successfully' });
