@@ -1,543 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>College Event Portal</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>Ignite Events</title>
   <style>
-    :root {
-      --primary-color: #0055a4;
-      --secondary-color: #2c73d2;
-      --accent-color: #64b5f6;
-      --light-color: #f5f9ff;
-      --dark-color: #1a2a3a;
-      --text-color: #333;
-      --text-muted: #6c757d;
-      --success-color: #28a745;
-      --warning-color: #ffc107;
-      --danger-color: #dc3545;
-      --border-radius: 10px;
-      --card-shadow: 0 8px 20px rgba(0, 85, 164, 0.1);
-      --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s ease;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
     body {
-      background-color: #f8f9fa;
-      color: var(--text-color);
-      line-height: 1.6;
-      overflow-x: hidden;
-      position: relative;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin-left: 220px;
+      background-color: #fdfdfd;
     }
-
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-    }
-
-    .logo-container {
-      text-align: center;
-      margin-bottom: 2rem;
-      animation: fadeIn 1s ease;
-    }
-
-    .college-logo img {
-      height: 100px;
-      margin-bottom: 1rem;
-      filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
-    }
-
-    .college-name {
-      color: var(--primary-color);
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .college-subtitle {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      margin-bottom: 2rem;
-    }
-
-    .action-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 400px;
-      animation: slideUp 0.8s ease;
-    }
-
-    .action-btn {
-      position: relative;
-      overflow: hidden;
-      border: none;
-      border-radius: var(--border-radius);
-      padding: 1.2rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: white;
+    .event {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 10px;
       cursor: pointer;
-      transition: var(--transition);
-      box-shadow: var(--box-shadow);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      background-color: #f9f9f9;
+      transition: background 0.2s ease;
     }
-
-    .action-btn::before {
-      content: '';
-      position: absolute;
+    .event:hover {
+      background-color: #f0f0f0;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
       top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.3) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      animation: shine 3s infinite;
+      bottom: 0;
+      width: 200px;
+      background: #f0f0f0;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     }
-
-    .action-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    .sidebar a {
+      display: block;
+      margin: 12px 0;
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
     }
-
-    .action-btn:active {
-      transform: translateY(1px);
+    .sidebar a:hover {
+      text-decoration: underline;
     }
-
-    .login-btn {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    .content {
+      max-width: 800px;
     }
-
-    .register-btn {
-      background: linear-gradient(135deg, var(--success-color), #5cb85c);
-    }
-
-    .event-btn {
-      background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-    }
-
-    .action-btn i {
-      font-size: 1.2rem;
-    }
-
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.7);
-      transform: scale(0);
-      animation: ripple 0.6s linear;
-      pointer-events: none;
-    }
-
-    @keyframes ripple {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
-
-    @keyframes shine {
-      0% { left: -100%; }
-      100% { left: 100%; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    footer {
-      margin-top: 3rem;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      animation: fadeIn 1.5s ease;
-    }
-
-    @media (max-width: 768px) {
-      .college-name {
-        font-size: 1.8rem;
-      }
-      
-      .college-subtitle {
-        font-size: 1rem;
-      }
-      
-      .action-buttons {
-        max-width: 100%;
-      }
-    }
-    
-.button1 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px 32px;
-  background-color: #006aff;
-  border: 8px solid #c0dfff;
-  color: white;
-  gap: 8px;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.text {
-  font-size: 1.7em;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-.svg {
-  padding-top: 5px;
-  height: 100%;
-  width: fit-content;
-}
-.svg svg {
-  width: 50px;
-  height: 30px;
-}
-.button1:hover {
-  border: 8px solid #b1d8ff;
-  background-color: #1b7aff;
-}
-.button1:active {
-  border: 5px solid #c0dfff;
-}
-.button1:hover .svg svg {
-  animation: jello-vertical 0.9s both;
-  transform-origin: left;
-}
-
-@keyframes jello-vertical {
-  0% {
-    transform: scale3d(1, 1, 1);
-  }
-  30% {
-    transform: scale3d(0.75, 1.25, 1);
-  }
-  40% {
-    transform: scale3d(1.25, 0.75, 1);
-  }
-  50% {
-    transform: scale3d(0.85, 1.15, 1);
-  }
-  65% {
-    transform: scale3d(1.05, 0.95, 1);
-  }
-  75% {
-    transform: scale3d(0.95, 1.05, 1);
-  }
-  100% {
-    transform: scale3d(1, 1, 1);
-  }
-}
-
-.button2 {
-  position: relative;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-  padding-block: 0.5rem;
-  padding-inline: 1.25rem;
-  background-color: rgb(0 107 179);
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #ffff;
-  gap: 10px;
-  font-weight: bold;
-  border: 3px solid #ffffff4d;
-  outline: none;
-  overflow: hidden;
-  font-size: 15px;
-  height:  70px;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  transition: all 0.3s ease-in-out;
-}
-
-.button2:hover {
-  transform: scale(1.05);
-  border-color: #fff9;
-}
-
-.button2:hover .icon {
-  transform: translate(4px);
-}
-
-.button2:hover::before {
-  animation: shine 1.5s ease-out infinite;
-}
-
-.button2::before {
-  content: "";
-  position: absolute;
-  width: 100px;
-  height: 100%;
-  background-image: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 30%,
-    rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0) 70%
-  );
-  top: 0;
-  left: -100px;
-  opacity: 0.6;
-}
-
-@keyframes shine {
-  0% {
-    left: -100px;
-  }
-
-  60% {
-    left: 100%;
-  }
-
-  to {
-    left: 100%;
-  }
-}
-
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
-
-  <div class="container">
-    <div class="logo-container">
-      <div class="college-logo">
-        <img src="ig.png" alt="College Logo">
-      </div>
-      <h1 class="college-name">College Event Portal</h1>
-      <p class="college-subtitle">Join the Biggest Technical Fest </p>
-    </div>
-
-    <div class="action-buttons">
-      
-         
-<button class="button2"  class="action-btn login-btn" id="loginBtn">
-    Login
-    <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
-      <path
-        clip-rule="evenodd"
-        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
-        fill-rule="evenodd"
-      ></path>
-    </svg>
-  </button>
-      
-      <button class="action-btn register-btn" id="registerBtn" style="border-radius: 50px;">
-        <i class="fas fa-user-plus"></i>
-        Register
-      </button>
-      
-    
-    
-<button class="button1" class="action-btn event-btn" id="eventBtn">
-    <span class="text">Discover</span>
-    <span class="svg">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="50"
-        height="20"
-        viewBox="0 0 38 15"
-        fill="none"
-      >
-        <path
-          fill="white"
-          d="M10 7.519l-.939-.344h0l.939.344zm14.386-1.205l-.981-.192.981.192zm1.276 5.509l.537.843.148-.094.107-.139-.792-.611zm4.819-4.304l-.385-.923h0l.385.923zm7.227.707a1 1 0 0 0 0-1.414L31.343.448a1 1 0 0 0-1.414 0 1 1 0 0 0 0 1.414l5.657 5.657-5.657 5.657a1 1 0 0 0 1.414 1.414l6.364-6.364zM1 7.519l.554.833.029-.019.094-.061.361-.23 1.277-.77c1.054-.609 2.397-1.32 3.629-1.787.617-.234 1.17-.392 1.623-.455.477-.066.707-.008.788.034.025.013.031.021.039.034a.56.56 0 0 1 .058.235c.029.327-.047.906-.39 1.842l1.878.689c.383-1.044.571-1.949.505-2.705-.072-.815-.45-1.493-1.16-1.865-.627-.329-1.358-.332-1.993-.244-.659.092-1.367.305-2.056.566-1.381.523-2.833 1.297-3.921 1.925l-1.341.808-.385.245-.104.068-.028.018c-.011.007-.011.007.543.84zm8.061-.344c-.198.54-.328 1.038-.36 1.484-.032.441.024.94.325 1.364.319.45.786.64 1.21.697.403.054.824-.001 1.21-.09.775-.179 1.694-.566 2.633-1.014l3.023-1.554c2.115-1.122 4.107-2.168 5.476-2.524.329-.086.573-.117.742-.115s.195.038.161.014c-.15-.105.085-.139-.076.685l1.963.384c.192-.98.152-2.083-.74-2.707-.405-.283-.868-.37-1.28-.376s-.849.069-1.274.179c-1.65.43-3.888 1.621-5.909 2.693l-2.948 1.517c-.92.439-1.673.743-2.221.87-.276.064-.429.065-.492.057-.043-.006.066.003.155.127.07.099.024.131.038-.063.014-.187.078-.49.243-.94l-1.878-.689zm14.343-1.053c-.361 1.844-.474 3.185-.413 4.161.059.95.294 1.72.811 2.215.567.544 1.242.546 1.664.459a2.34 2.34 0 0 0 .502-.167l.15-.076.049-.028.018-.011c.013-.008.013-.008-.524-.852l-.536-.844.019-.012c-.038.018-.064.027-.084.032-.037.008.053-.013.125.056.021.02-.151-.135-.198-.895-.046-.734.034-1.887.38-3.652l-1.963-.384zm2.257 5.701l.791.611.024-.031.08-.101.311-.377 1.093-1.213c.922-.954 2.005-1.894 2.904-2.27l-.771-1.846c-1.31.547-2.637 1.758-3.572 2.725l-1.184 1.314-.341.414-.093.117-.025.032c-.01.013-.01.013.781.624zm5.204-3.381c.989-.413 1.791-.42 2.697-.307.871.108 2.083.385 3.437.385v-2c-1.197 0-2.041-.226-3.19-.369-1.114-.139-2.297-.146-3.715.447l.771 1.846z"
-        ></path>
-      </svg>
-    </span>
-  </button>
-  
-        
-
-    </div>
-
-    <footer>
-      <p>© 2025 Ignite Technical Fest. All rights reserved.</p>
-    </footer>
+  <div class="sidebar">
+    <a href="index.html">🏠 Home</a>
+    <a href="dashboard.html">📊 Dashboard</a>
+    <a href="login.html" id="loginBtn">🔑 Login</a>
+    <a href="signup.html" id="signupBtn">📝 Signup</a>
+    <a href="#" id="logoutBtn" style="display:none">🚪 Logout</a>
+    <a href="admin.html" id="adminPageBtn" style="display:none">🛠 Admin Page</a>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <div class="content">
+    <h1>🔥 Welcome to Ignite Events</h1>
+    <p>Select an event to view details and register:</p>
+    <div id="eventList">Loading events...</div>
+  </div>
+
   <script>
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
 
-    particlesJS('particles-js', {
-      "particles": {
-        "number": {
-          "value": 80,
-          "density": {
-            "enable": true,
-            "value_area": 800
-          }
-        },
-        "color": {
-          "value": "#0055a4"
-        },
-        "shape": {
-          "type": "circle",
-          "stroke": {
-            "width": 0,
-            "color": "#000000"
-          },
-          "polygon": {
-            "nb_sides": 5
-          }
-        },
-        "opacity": {
-          "value": 0.5,
-          "random": false,
-          "anim": {
-            "enable": false,
-            "speed": 1,
-            "opacity_min": 0.1,
-            "sync": false
-          }
-        },
-        "size": {
-          "value": 3,
-          "random": true,
-          "anim": {
-            "enable": false,
-            "speed": 40,
-            "size_min": 0.1,
-            "sync": false
-          }
-        },
-        "line_linked": {
-          "enable": true,
-          "distance": 150,
-          "color": "#0055a4",
-          "opacity": 0.4,
-          "width": 1
-        },
-        "move": {
-          "enable": true,
-          "speed": 3,
-          "direction": "none",
-          "random": false,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": false,
-          "attract": {
-            "enable": false,
-            "rotateX": 600,
-            "rotateY": 1200
-          }
-        }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "grab"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "push"
-          },
-          "resize": true
-        },
-        "modes": {
-          "grab": {
-            "distance": 140,
-            "line_linked": {
-              "opacity": 1
-            }
-          },
-          "bubble": {
-            "distance": 400,
-            "size": 40,
-            "duration": 2,
-            "opacity": 8,
-            "speed": 3
-          },
-          "repulse": {
-            "distance": 200,
-            "duration": 0.4
-          },
-          "push": {
-            "particles_nb": 4
-          },
-          "remove": {
-            "particles_nb": 2
-          }
-        }
-      },
-      "retina_detect": true
-    });
-
-
-    function setupButton(button, url) {
-      button.addEventListener('click', function(e) {
-        
-        const ripple = document.createElement('span');
-        ripple.classList.add('ripple');
-        
-        const rect = this.getBoundingClientRect();
-        ripple.style.left = `${e.clientX - rect.left}px`;
-        ripple.style.top = `${e.clientY - rect.top}px`;
-        
-        this.appendChild(ripple);
-        
-        setTimeout(() => {
-          ripple.remove();
-          window.location.href = url;
-        }, 600);
-      });
+    // Toggle sidebar buttons based on auth state
+    if (token) {
+      document.getElementById('loginBtn').style.display = 'none';
+      document.getElementById('signupBtn').style.display = 'none';
+      document.getElementById('logoutBtn').style.display = 'block';
     }
 
-    
-    setupButton(document.getElementById('loginBtn'), 'login.html');
-    setupButton(document.getElementById('registerBtn'), 'register.html');
-    setupButton(document.getElementById('eventBtn'), 'events.html');
+    if (user && user.role === 'admin') {
+      document.getElementById('adminPageBtn').style.display = 'block';
+    }
+
+    // Logout logic
+    document.getElementById('logoutBtn').onclick = () => {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    };
+
+    // Load events from backend
+    async function loadEvents() {
+      try {
+        const res = await fetch('http://localhost:5050/api/event/list');
+        const events = await res.json();
+
+        const container = document.getElementById('eventList');
+        container.innerHTML = '';
+
+        if (events.length === 0) {
+          container.textContent = '⚠️ No events found.';
+          return;
+        }
+
+        events.forEach(event => {
+          const div = document.createElement('div');
+          div.className = 'event';
+          div.textContent = event.name;
+          div.onclick = () => {
+            if (!token) {
+              localStorage.setItem('redirectToEventId', event.id);
+              window.location.href = 'login.html';
+              return;
+            }
+
+            localStorage.setItem('selectedEventId', event.id);
+            window.location.href = 'register.html'; // renamed to enroll.html if you wish
+          };
+          container.appendChild(div);
+        });
+      } catch (err) {
+        console.error("Failed to load events", err);
+        document.getElementById('eventList').textContent = '❌ Failed to load events.';
+      }
+    }
+
+    loadEvents();
   </script>
 </body>
 </html>

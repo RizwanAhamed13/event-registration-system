@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enroll for Event</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .member { margin: 10px 0; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1 id="eventName">Loading Event...</h1>
+  <p id="eventDescription">Please wait...</p>
+
+  <div id="registrationSection" class="hidden">
+    <h2>Select Participants:</h2>
+    <form id="registrationForm">
+      <div id="memberList"></div>
+      <button type="submit">Enroll Team</button>
+    </form>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+    const eventId = localStorage.getItem('selectedEventId');
+
+    if (!token || !user || !eventId) {
+      alert("Invalid session. Please log in again.");
+      window.location.href = "login.html";
+    }
+
+    async function loadEventAndTeam() {
+      try {
+        // Fetch event details
+        const eventRes = await fetch(`http://localhost:5050/api/event/${eventId}`);
+        const event = await eventRes.json();
+
+        document.getElementById("eventName").textContent = event.name;
+        document.getElementById("eventDescription").textContent = event.description;
+
+        // Fetch team details
+        const teamRes = await fetch(`http://localhost:5050/api/team/my-team`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const { members, leader_id } = await teamRes.json();
+
+        // Only team leader can register
+        if (user.id !== leader_id) {
+          document.getElementById("registrationSection").innerHTML = `<p>Only team leader can enroll for this event.</p>`;
+          return;
+        }
+
+        // Display member checkboxes
+        const listDiv = document.getElementById("memberList");
+        members.forEach(member => {
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.name = "participants";
+          checkbox.value = member.id;
+          checkbox.id = `member-${member.id}`;
+
+          const label = document.createElement("label");
+          label.htmlFor = checkbox.id;
+          label.textContent = member.name;
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "member";
+          wrapper.appendChild(checkbox);
+          wrapper.appendChild(label);
+
+          listDiv.appendChild(wrapper);
+        });
+
+        document.getElementById("registrationSection").classList.remove("hidden");
+
+        // Submit enrollment
+        document.getElementById("registrationForm").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const selected = [...document.querySelectorAll('input[name="participants"]:checked')].map(cb => cb.value);
+
+          if (selected.length === 0) return alert("Select at least one participant");
+
+          const res = await fetch(`http://localhost:5050/api/event/register`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              event_name: event.name,
+              participant_ids: selected
+            })
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            alert("✅ Enrollment successful");
+            window.location.href = "dashboard.html";
+          } else {
+            alert("❌ " + data.msg);
+          }
+        });
+
+      } catch (err) {
+        alert("❌ Error loading event or team data.");
+        console.error(err);
+      }
+    }
+
+    loadEventAndTeam();
+  </script>
+</body>
+</html>
