@@ -9,381 +9,381 @@
 
   <style>
     :root {
-      --primary-color: #0055a4;
-      --secondary-color: #2c73d2;
-      --accent-color: #64b5f6;
-      --light-color: #f5f9ff;
-      --dark-color: #1a2a3a;
-      --text-color: #333;
-      --text-muted: #6c757d;
-      --success-color: #28a745;
-      --warning-color: #ffc107;
-      --danger-color: #dc3545;
-      --border-radius: 10px;
-      --card-shadow: 0 8px 20px rgba(0, 85, 164, 0.1);
-      --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s ease;
-    }
+--primary-color: #0055a4;
+--secondary-color: #2c73d2;
+--accent-color: #64b5f6;
+--light-color: #f5f9ff;
+--dark-color: #1a2a3a;
+--text-color: #333;
+--text-muted: #6c757d;
+--success-color: #28a745;
+--warning-color: #ffc107;
+--danger-color: #dc3545;
+--border-radius: 10px;
+--card-shadow: 0 8px 20px rgba(0, 85, 164, 0.1);
+--box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+--transition: all 0.3s ease;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    body {
-      background-color: #f8f9fa;
-      color: var(--text-color);
-      line-height: 1.6;
-      overflow-x: hidden;
-      position: relative;
-    }
+body {
+background-color: #f8f9fa;
+color: var(--text-color);
+line-height: 1.6;
+overflow-x: hidden;
+position: relative;
+}
 
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
+#particles-js {
+position: fixed;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+z-index: -1;
+}
 
-    /* Enhanced Wave Shining Header */
-    .dashboard-header {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--box-shadow);
-      position: relative;
-      z-index: 10;
-      overflow: hidden;
-      width: 100%;
-    }
+/* Enhanced Wave Shining Header */
+.dashboard-header {
+background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+color: white;
+padding: 1rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+box-shadow: var(--box-shadow);
+position: relative;
+z-index: 10;
+overflow: hidden;
+width: 100%;
+}
 
-    .dashboard-header::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-          90deg,
-          rgba(255,255,255,0) 0%,
-          rgba(255,255,255,0.5) 50%,
-          rgba(255,255,255,0) 100%
-      );
-      animation: waveShine 2.5s infinite linear;
-      transform: skewX(-20deg);
-    }
+.dashboard-header::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(
+90deg,
+rgba(255,255,255,0) 0%,
+rgba(255,255,255,0.5) 50%,
+rgba(255,255,255,0) 100%
+);
+animation: waveShine 2.5s infinite linear;
+transform: skewX(-20deg);
+}
 
-    .dashboard-header::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-          90deg,
-          rgba(255,255,255,0) 0%,
-          rgba(255,255,255,0.3) 50%,
-          rgba(255,255,255,0) 100%
-      );
-      animation: waveShine 3.5s infinite linear 0.5s;
-      transform: skewX(-20deg);
-    }
+.dashboard-header::after {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(
+90deg,
+rgba(255,255,255,0) 0%,
+rgba(255,255,255,0.3) 50%,
+rgba(255,255,255,0) 100%
+);
+animation: waveShine 3.5s infinite linear 0.5s;
+transform: skewX(-20deg);
+}
 
-    @keyframes waveShine {
-      0% { transform: translateX(-150%) skewX(-20deg); }
-      100% { transform: translateX(150%) skewX(-20deg); }
-    }
+@keyframes waveShine {
+0% { transform: translateX(-150%) skewX(-20deg); }
+100% { transform: translateX(150%) skewX(-20deg); }
+}
 
-    .logo-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
+.logo-container {
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 100%;
+max-width: 1200px;
+margin: 0 auto;
+position: relative;
+z-index: 2;
+}
 
-    .logo {
-      height: 50px;
-      transition: var(--transition);
-      filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
-    }
+.logo {
+height: 50px;
+transition: var(--transition);
+filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+}
 
-    .logo:hover {
-      transform: scale(1.05);
-      filter: drop-shadow(0 0 15px rgba(255,255,255,0.8));
-    }
+.logo:hover {
+transform: scale(1.05);
+filter: drop-shadow(0 0 15px rgba(255,255,255,0.8));
+}
 
-    .main-container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
+.main-container {
+max-width: 1200px;
+margin: 2rem auto;
+padding: 0 1rem;
+}
 
-    .welcome-section {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+.welcome-section {
+text-align: center;
+margin-bottom: 2rem;
+}
 
-    h1 {
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-      font-size: 2rem;
-    }
+h1 {
+color: var(--primary-color);
+margin-bottom: 1rem;
+font-size: 2rem;
+}
 
-    .dashboard-columns {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      width: 100%;
-    }
+.dashboard-columns {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 2rem;
+width: 100%;
+}
 
-    .dashboard-column {
-      background: white;
-      padding: 1.5rem;
-      border-radius: var(--border-radius);
-      box-shadow: var(--card-shadow);
-      display: flex;
-      flex-direction: column;
-    }
+.dashboard-column {
+background: white;
+padding: 1.5rem;
+border-radius: var(--border-radius);
+box-shadow: var(--card-shadow);
+display: flex;
+flex-direction: column;
+}
 
-    .info-container {
-      margin-bottom: 1.5rem;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
+.info-container {
+margin-bottom: 1.5rem;
+display: grid;
+grid-template-columns: 1fr;
+gap: 15px;
+}
 
-    .info-container h2 {
-      color: var(--primary-color);
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--accent-color);
-      grid-column: 1 / -1;
-    }
+.info-container h2 {
+color: var(--primary-color);
+font-size: 1.3rem;
+margin-bottom: 1rem;
+padding-bottom: 0.5rem;
+border-bottom: 2px solid var(--accent-color);
+grid-column: 1 / -1;
+}
 
-    .info {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      align-items: center;
-      margin-bottom: 0;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      gap: 10px;
-    }
+.info {
+display: grid;
+grid-template-columns: 1fr 2fr;
+align-items: center;
+margin-bottom: 0;
+padding-bottom: 10px;
+border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+gap: 10px;
+}
 
-    .info:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-    }
+.info:last-child {
+border-bottom: none;
+margin-bottom: 0;
+}
 
-    .info label {
-      font-weight: bold;
-      color: var(--primary-color);
-      word-break: break-word;
-    }
+.info label {
+font-weight: bold;
+color: var(--primary-color);
+word-break: break-word;
+}
 
-    .info p {
-      margin: 0;
-      color: var(--text-color);
-      word-break: break-word;
-    }
+.info p {
+margin: 0;
+color: var(--text-color);
+word-break: break-word;
+}
 
-    /*  Role Badge */
-    .role-badge {
-      font-family: 'Poppins';
-      display: inline-block;
-      padding: 5px 12px;
-      background: rgba(0, 85, 164, 0.1);
-      color: var(--primary-color);
-      border-radius: 20px;
-      font-size: 1.5rem;
-      font-weight: 500;
-      margin-top: 0.5rem;
-      position: relative;
-      overflow: hidden;
-      animation: glow 2s infinite alternate;
-    }
+/* Role Badge */
+.role-badge {
+font-family: 'Poppins';
+display: inline-block;
+padding: 5px 12px;
+background: rgba(0, 85, 164, 0.1);
+color: var(--primary-color);
+border-radius: 20px;
+font-size: 1.5rem;
+font-weight: 500;
+margin-top: 0.5rem;
+position: relative;
+overflow: hidden;
+animation: glow 2s infinite alternate;
+}
 
-    @keyframes glow {
-      from {
-        box-shadow: 0 0 5px rgba(0, 85, 164, 0.3);
-      }
-      to {
-        box-shadow: 0 0 15px rgba(0, 85, 164, 0.6);
-      }
-    }
+@keyframes glow {
+from {
+box-shadow: 0 0 5px rgba(0, 85, 164, 0.3);
+}
+to {
+box-shadow: 0 0 15px rgba(0, 85, 164, 0.6);
+}
+}
 
-    
-    #approval[data-status="approved"] {
-      color: var(--success-color);
-      font-weight: 500;
-    }
 
-    #approval[data-status="pending"] {
-      color: var(--warning-color);
-      font-weight: 500;
-    }
+#approval[data-status="approved"] {
+color: var(--success-color);
+font-weight: 500;
+}
 
-    
-    .logout-container {
-      text-align: center;
-      margin-top: 2rem;
-    }
+#approval[data-status="pending"] {
+color: var(--warning-color);
+font-weight: 500;
+}
 
-    .logout-btn {
-      background: none;
-      border: 2px solid var(--danger-color);
-      color: var(--danger-color);
-      padding: 0.8rem 2.5rem;
-      border-radius: 30px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
 
-    .logout-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-          to right,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.3) 50%,
-          rgba(255, 255, 255, 0) 100%
-      );
-      animation: logoutShine 3s infinite;
-    }
+.logout-container {
+text-align: center;
+margin-top: 2rem;
+}
 
-    @keyframes logoutShine {
-      0% { left: -100%; }
-      100% { left: 100%; }
-    }
+.logout-btn {
+background: none;
+border: 2px solid var(--danger-color);
+color: var(--danger-color);
+padding: 0.8rem 2.5rem;
+border-radius: 30px;
+font-weight: 600;
+cursor: pointer;
+transition: var(--transition);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+position: relative;
+overflow: hidden;
+}
 
-    .logout-btn:hover {
-      background-color: var(--danger-color);
-      color: white;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2);
-    }
+.logout-btn::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(
+to right,
+rgba(255, 255, 255, 0) 0%,
+rgba(255, 255, 255, 0.3) 50%,
+rgba(255, 255, 255, 0) 100%
+);
+animation: logoutShine 3s infinite;
+}
 
-    .logout-btn i {
-      margin-right: 8px;
-      font-size: 1.1rem;
-      position: relative;
-      z-index: 1;
-    }
+@keyframes logoutShine {
+0% { left: -100%; }
+100% { left: 100%; }
+}
 
-    .logout-btn .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.7);
-      transform: scale(0);
-      animation: ripple 0.6s linear;
-      pointer-events: none;
-    }
+.logout-btn:hover {
+background-color: var(--danger-color);
+color: white;
+transform: translateY(-3px);
+box-shadow: 0 10px 20px rgba(220, 53, 69, 0.2);
+}
 
-    @keyframes ripple {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
+.logout-btn i {
+margin-right: 8px;
+font-size: 1.1rem;
+position: relative;
+z-index: 1;
+}
 
-    
-    .loading {
-      position: relative;
-      color: transparent;
-    }
+.logout-btn .ripple {
+position: absolute;
+border-radius: 50%;
+background-color: rgba(255, 255, 255, 0.7);
+transform: scale(0);
+animation: ripple 0.6s linear;
+pointer-events: none;
+}
 
-    .loading::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      width: 100%;
-      height: 1em;
-      background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
-      animation: loading 1.5s infinite;
-    }
+@keyframes ripple {
+to {
+transform: scale(4);
+opacity: 0;
+}
+}
 
-    @keyframes loading {
-      0% { transform: translateY(-50%) translateX(-100%); }
-      100% { transform: translateY(-50%) translateX(100%); }
-    }
 
-  
-    @media (max-width: 768px) {
-      .dashboard-columns {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      
-      h1 {
-        font-size: 1.8rem;
-      }
-      
-      .info {
-        grid-template-columns: 1fr 1.5fr;
-      }
-    }
+.loading {
+position: relative;
+color: transparent;
+}
 
-    @media (max-width: 576px) {
-      .main-container {
-        padding: 0 0.75rem;
-      }
-      
-      .dashboard-column {
-        padding: 1.25rem;
-      }
-      
-      .info {
-        grid-template-columns: 1fr 2fr;
-        gap: 8px;
-      }
-      
-      .logout-btn {
-        padding: 0.7rem 2rem;
-        font-size: 0.9rem;
-      }
-    }
+.loading::after {
+content: '';
+position: absolute;
+top: 50%;
+left: 0;
+transform: translateY(-50%);
+width: 100%;
+height: 1em;
+background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+animation: loading 1.5s infinite;
+}
 
-    /* Very small screens */
-    @media (max-width: 400px) {
-      .info {
-        grid-template-columns: 1fr;
-        gap: 4px;
-      }
-      
-      .info label {
-        margin-bottom: 2px;
-      }
-      
-      .info p {
-        padding-left: 0;
-      }
-    }
+@keyframes loading {
+0% { transform: translateY(-50%) translateX(-100%); }
+100% { transform: translateY(-50%) translateX(100%); }
+}
+
+
+@media (max-width: 768px) {
+.dashboard-columns {
+grid-template-columns: 1fr;
+gap: 1.5rem;
+}
+
+h1 {
+font-size: 1.8rem;
+}
+
+.info {
+grid-template-columns: 1fr 1.5fr;
+}
+}
+
+@media (max-width: 576px) {
+.main-container {
+padding: 0 0.75rem;
+}
+
+.dashboard-column {
+padding: 1.25rem;
+}
+
+.info {
+grid-template-columns: 1fr 2fr;
+gap: 8px;
+}
+
+.logout-btn {
+padding: 0.7rem 2rem;
+font-size: 0.9rem;
+}
+}
+
+/* Very small screens */
+@media (max-width: 400px) {
+.info {
+grid-template-columns: 1fr;
+gap: 4px;
+}
+
+.info label {
+margin-bottom: 2px;
+}
+
+.info p {
+padding-left: 0;
+}
+}
   </style>
 </head>
 <body>
@@ -405,7 +405,6 @@
     </div>
 
     <div class="dashboard-columns">
-   
       <div class="dashboard-column">
         <div class="info-container">
           <h2><i class="fas fa-user"></i> Personal Information</h2>
@@ -435,6 +434,26 @@
         <div class="info-container">
           <h2><i class="fas fa-check-circle"></i> Status</h2>
           <div class="info"><label>Approval Status:</label><p id="approval">Loading...</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Registration Section -->
+    <div class="dashboard-column">
+      <div class="info-container">
+        <h2><i class="fas fa-calendar-check"></i> Registered Events</h2>
+        <div id="registeredEvents">
+          <!-- Events will be dynamically listed here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Participant QR Section -->
+    <div class="dashboard-column">
+      <div class="info-container">
+        <h2><i class="fas fa-qrcode"></i> Your Event QR Codes</h2>
+        <div id="qrEventList">
+          <!-- Each QR will be injected here -->
         </div>
       </div>
     </div>
@@ -554,103 +573,119 @@
       },
       "retina_detect": true
     });
-
     const user = JSON.parse(localStorage.getItem('user'));
-    const token = localStorage.getItem('token');
+const token = localStorage.getItem('token');
 
-    if (!user || !token) {
-      alert("Not logged in");
-      window.location.href = "login.html";
-    }
+if (!user || !token) {
+  alert("Not logged in");
+  window.location.href = "login.html";
+}
 
-    document.getElementById('username').textContent = user.name;
+document.getElementById('username').textContent = user.name;
 
-    async function loadDashboard() {
-      try {
-        // Add loading states
-        document.querySelectorAll('.info p').forEach(p => {
-          p.classList.add('loading');
-        });
-
-        const res = await fetch(`http://localhost:5050/api/dashboard/${user.id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.msg || "Failed to load dashboard");
-        }
-
-        // Remove loading states
-        document.querySelectorAll('.info p').forEach(p => {
-          p.classList.remove('loading');
-        });
-
-        document.getElementById('role').textContent = user.role;
-        
-        const approvalElement = document.getElementById('approval');
-        approvalElement.textContent = data.is_approved ? "✅ Approved" : "⏳ Pending Approval";
-        approvalElement.setAttribute('data-status', data.is_approved ? 'approved' : 'pending');
-        
-        document.getElementById('email').textContent = data.email;
-        document.getElementById('phone').textContent = data.phone || "N/A";
-        document.getElementById('roll').textContent = data.roll_number;
-        document.getElementById('section').textContent = data.section;
-        document.getElementById('department').textContent = data.department;
-        document.getElementById('referral').textContent = data.referral_roll_no || "N/A";
-        document.getElementById('college').textContent = data.college_name || "N/A";
-
-        document.getElementById('team_code').textContent = data.team?.team_code || "N/A";
-        document.getElementById('team_name').textContent = data.team?.team_name || "N/A";
-        document.getElementById('team_leader').textContent = data.team?.team_leader || "N/A";
-      } catch (err) {
-        console.error("Dashboard load error:", err.message);
-        
-        // Remove loading states on erro
-        document.querySelectorAll('.info p').forEach(p => {
-          p.classList.remove('loading');
-          if (p.textContent === 'Loading...') {
-            p.textContent = 'Error loading data';
-            p.style.color = 'var(--danger-color)';
-          }
-        });
-      }
-    }
-
-    function logout() {
-      localStorage.clear();
-      window.location.href = "login.html";
-    }
-
-    
-    document.getElementById('logoutBtn').addEventListener('click', function(e) {
-      
-      const ripple = document.createElement('span');
-      ripple.classList.add('ripple');
-      
-      
-      const rect = this.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      
-      
-      this.appendChild(ripple);
-      
-      
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
-      
-      
-      setTimeout(logout, 300);
+async function loadDashboard() {
+  try {
+    const res = await fetch(`http://localhost:5050/api/dashboard/${user.id}`, {
+      headers: { Authorization: `Bearer ${token}` }
     });
 
-    loadDashboard();
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.msg || "Failed to load dashboard");
+    }
+
+    // Populate personal and team info
+    document.getElementById('role').textContent = user.role;
+    document.getElementById('email').textContent = data.email;
+    document.getElementById('phone').textContent = data.phone || "N/A";
+    document.getElementById('roll').textContent = data.roll_number;
+    document.getElementById('section').textContent = data.section;
+    document.getElementById('department').textContent = data.department;
+    document.getElementById('referral').textContent = data.referral_roll_no || "N/A";
+    document.getElementById('college').textContent = data.college_name || "N/A";
+    document.getElementById('approval').textContent = data.is_approved ? '✅ Approved' : '❌ Pending';
+    document.getElementById('approval').setAttribute('data-status', data.is_approved ? 'approved' : 'pending');
+    document.getElementById('team_code').textContent = data.team?.team_code || "N/A";
+    document.getElementById('team_name').textContent = data.team?.team_name || "N/A";
+    document.getElementById('team_leader').textContent = data.team?.team_leader || "N/A";
+
+    // ✅ Display events user is part of (from qr_entries)
+    const eventContainer = document.getElementById('registeredEvents');
+    const qrContainer = document.getElementById('qrEventList');
+
+    if (data.qr_entries && data.qr_entries.length > 0) {
+      const grouped = {};
+
+      data.qr_entries.forEach(entry => {
+        if (!grouped[entry.event_id]) {
+          grouped[entry.event_id] = {
+            event_name: entry.event_name,
+            qrs: []
+          };
+        }
+        grouped[entry.event_id].qrs.push(entry.qr);
+      });
+
+      Object.values(grouped).forEach(group => {
+        // Event title under "Registered Events"
+        const ev = document.createElement('div');
+        ev.innerHTML = `<h3>${group.event_name}</h3>`;
+        eventContainer.appendChild(ev);
+
+        // QR per event
+        group.qrs.forEach(qrData => {
+          const img = document.createElement('img');
+          img.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(JSON.stringify(qrData))}`;
+          img.alt = "QR Code";
+          img.width = 150;
+          img.height = 150;
+
+          const box = document.createElement('div');
+          box.style.marginBottom = "20px";
+          box.appendChild(document.createElement('p')).innerText = group.event_name;
+          box.appendChild(img);
+
+          qrContainer.appendChild(box);
+        });
+      });
+    } else {
+      eventContainer.innerHTML = `<p>No events registered yet.</p>`;
+      qrContainer.innerHTML = `<p>No QR codes available yet.</p>`;
+    }
+
+  } catch (err) {
+    console.error("Dashboard load error:", err.message);
+  }
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
+document.getElementById('logoutBtn').addEventListener('click', function (e) {
+  const ripple = document.createElement('span');
+  ripple.classList.add('ripple');
+
+  const rect = this.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+
+  this.appendChild(ripple);
+
+  setTimeout(() => {
+    ripple.remove();
+  }, 600);
+
+  setTimeout(logout, 300);
+});
+
+loadDashboard();
+    
   </script>
 </body>
 </html>

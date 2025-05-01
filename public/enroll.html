@@ -81,6 +81,10 @@
 
           if (selected.length === 0) return alert("Select at least one participant");
 
+          console.log("🟡 Sending registration data:");
+          console.log("📌 Event ID:", eventId);
+          console.log("👥 Participant IDs:", selected);
+
           const res = await fetch(`http://localhost:5050/api/event/register`, {
             method: "POST",
             headers: {
@@ -88,7 +92,7 @@
               Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({
-              event_name: event.name,
+              event_id: eventId,
               participant_ids: selected
             })
           });
@@ -104,7 +108,7 @@
 
       } catch (err) {
         alert("❌ Error loading event or team data.");
-        console.error(err);
+        console.error("❌ Full Error:", err);
       }
     }
 

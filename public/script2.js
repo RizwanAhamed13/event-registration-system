@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
 
   particlesJS('particles-js', {
@@ -234,11 +233,11 @@ function initFormEvents() {
 
     setTimeout(() => {
       if (data.user.role === 'admin') {
-        window.location.href = 'admin.html';
+        window.location.href = 'index.html';
       } else if (data.user.role === 'moderator') {
-        window.location.href = 'moderator.html';
+        window.location.href = 'index.html';
       } else {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'index.html';
       }
     }, 1000);
 
@@ -350,3 +349,5 @@ document.addEventListener('DOMContentLoaded', function() {
   `;
   document.head.appendChild(style);
 });
+
+
