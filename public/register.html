@@ -7,6 +7,39 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+            
+        .password-error {
+            color: #ff3860;
+            font-size: 0.8rem;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+            background-color: #f0f0f0;
+        }
+        
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            z-index: 2;
+            display: none;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        
+        .form-group input[type="password"]:focus ~ .password-toggle,
+        .form-group input[type="password"]:not(:placeholder-shown) ~ .password-toggle {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="particles-container" id="particles-js"></div>
@@ -65,54 +98,62 @@
                         <div class="input-highlight"></div>
                     </div>
                     <div class="form-group">
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="password" required placeholder=" ">
                         <label for="password" class="floating-label">Password</label>
                         <div class="input-highlight"></div>
+                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="confirm_password" name="confirm_password" required placeholder=" ">
+                        <label for="confirm_password" class="floating-label">Confirm Password</label>
+                        <div class="input-highlight"></div>
+                        <i class="fas fa-eye password-toggle" id="toggleConfirmPassword"></i>
+                        <div id="password-error" class="password-error">Passwords do not match!</div>
                     </div>
                     <div class="form-buttons">
-                        <button type="button" class="next-button">Next <i class="fas fa-arrow-right"></i></button>
+                        <button type="button" class="next-button" id="step1-next">Next <i class="fas fa-arrow-right"></i></button>
                     </div>
                 </div>
 
                 <!-- Step 2: Academic Details -->
-<div class="form-step" data-step="2">
-    <h2 class="form-section-title">Academic Details</h2>
-  
-    <div class="form-group">
-      <input type="text" id="roll_number" name="roll_number" required>
-      <label for="roll_number" class="floating-label">Roll Number</label>
-      <div class="input-highlight"></div>
-    </div>
-  
-    <div class="form-group">
-      <input type="text" id="section" name="section" required>
-      <label for="section" class="floating-label">Section</label>
-      <div class="input-highlight"></div>
-    </div>
-  
-    <div class="form-group">
-      <input type="text" id="department" name="department" required>
-      <label for="department" class="floating-label">Department</label>
-      <div class="input-highlight"></div>
-    </div>
-  
-    <div class="form-group">
-      <input type="text" id="college_name" name="college_name" required>
-      <label for="college_name" class="floating-label">College Name</label>
-      <div class="input-highlight"></div>
-    </div>
-  
-    <div class="form-group">
-      <input type="text" id="referral_roll_no" name="referral_roll_no">
-      <label for="referral_roll_no" class="floating-label">Referral Roll Number (optional)</label>
-      <div class="input-highlight"></div>
-    </div>
-  
-    <div class="form-buttons">
-      <button type="button" class="prev-button"><i class="fas fa-arrow-left"></i> Previous</button>
-      <button type="button" class="next-button">Next <i class="fas fa-arrow-right"></i></button>
-    </div>
-  </div>
+                <div class="form-step" data-step="2">
+                    <h2 class="form-section-title">Academic Details</h2>
+                  
+                    <div class="form-group">
+                      <input type="text" id="roll_number" name="roll_number" required>
+                      <label for="roll_number" class="floating-label">Roll Number</label>
+                      <div class="input-highlight"></div>
+                    </div>
+                  
+                    <div class="form-group">
+                      <input type="text" id="section" name="section" required>
+                      <label for="section" class="floating-label">Section</label>
+                      <div class="input-highlight"></div>
+                    </div>
+                  
+                    <div class="form-group">
+                      <input type="text" id="department" name="department" required>
+                      <label for="department" class="floating-label">Department</label>
+                      <div class="input-highlight"></div>
+                    </div>
+                  
+                    <div class="form-group">
+                      <input type="text" id="college_name" name="college_name" required>
+                      <label for="college_name" class="floating-label">College Name</label>
+                      <div class="input-highlight"></div>
+                    </div>
+                  
+                    <div class="form-group">
+                      <input type="text" id="referral_roll_no" name="referral_roll_no">
+                      <label for="referral_roll_no" class="floating-label">Referral Roll Number (optional)</label>
+                      <div class="input-highlight"></div>
+                    </div>
+                  
+                    <div class="form-buttons">
+                      <button type="button" class="prev-button"><i class="fas fa-arrow-left"></i> Previous</button>
+                      <button type="button" class="next-button">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
 
                 <!-- Step 3: Team Details -->
                 <div class="form-step" data-step="3">
@@ -149,16 +190,111 @@
         <footer class="form-footer">
             <p>&copy; 2025 College Event Registration. All Rights Reserved.</p>
             <div class="footer-logos">
-                
-
                 <div class="logo small logo-right"><img src="ig.png" style="height: 100px;" ></div>
             </div>
         </footer>
     </div>
-
-
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
 <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        
+        const togglePassword = document.querySelector('#togglePassword');
+        const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+        const password = document.querySelector('#password');
+        const confirmPassword = document.querySelector('#confirm_password');
+        const step1NextButton = document.querySelector('#step1-next');
+
+        function togglePasswordVisibility(inputElement, toggleElement) {
+            const type = inputElement.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputElement.setAttribute('type', type);
+            toggleElement.classList.toggle('fa-eye-slash');
+        }
+
+        togglePassword.addEventListener('click', function() {
+            togglePasswordVisibility(password, this);
+        });
+
+        toggleConfirmPassword.addEventListener('click', function() {
+            togglePasswordVisibility(confirmPassword, this);
+        });
+
+        
+        function validatePassword() {
+            const passwordValue = password.value;
+            const confirmPasswordValue = confirmPassword.value;
+            const errorElement = document.getElementById('password-error');
+            
+            if (passwordValue !== confirmPasswordValue) {
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+
+        step1NextButton.addEventListener('click', function(e) {
+            if (!validatePassword()) {
+                e.preventDefault();
+                return false;
+            }
+            
+            
+            const currentStep = document.querySelector('.form-step.active');
+            const nextStep = currentStep.nextElementSibling;
+            
+            if (nextStep) {
+                currentStep.classList.remove('active');
+                nextStep.classList.add('active');
+                
+                
+                const currentStepNum = parseInt(currentStep.dataset.step);
+                document.querySelector(`.progress-step[data-step="${currentStepNum}"]`).classList.remove('active');
+                document.querySelector(`.progress-step[data-step="${currentStepNum + 1}"]`).classList.add('active');
+            }
+        });
+
+
+        let validationAttempted = false;
+        [password, confirmPassword].forEach(field => {
+            field.addEventListener('input', function() {
+                if (validationAttempted) {
+                    validatePassword();
+                }
+            });
+        });
+
+
+        document.getElementById('registration-form').addEventListener('submit', function(e) {
+            if (!validatePassword()) {
+                e.preventDefault();
+                return false;
+            }
+            
+            document.getElementById('registration-form').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+        });
+
+        
+        document.querySelectorAll('.prev-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const currentStep = this.closest('.form-step');
+                const prevStep = currentStep.previousElementSibling;
+                
+                if (prevStep) {
+                    currentStep.classList.remove('active');
+                    prevStep.classList.add('active');
+                    
+                    const currentStepNum = parseInt(currentStep.dataset.step);
+                    document.querySelector(`.progress-step[data-step="${currentStepNum}"]`).classList.remove('active');
+                    document.querySelector(`.progress-step[data-step="${currentStepNum - 1}"]`).classList.add('active');
+                }
+            });
+        });
+
+        
+        
+    </script>
 </body>
 </html>
