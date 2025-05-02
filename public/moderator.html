@@ -2,78 +2,424 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Moderator Panel - Mark Attendance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background-color: #f4f4f4;
+    :root {
+      --primary: #0055a4;
+      --primary-dark: #003f7f;
+      --accent: #4CAF50;
+      --error: #f44336;
+      --text: #333;
+      --light-gray: #f5f5f5;
+      --white: #ffffff;
     }
 
-    h1 {
-      color: #0055a4;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-gray);
+      color: var(--text);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Particle Background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      background-color: rgba(0, 85, 164, 0.1);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 100%;
+      padding: 20px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+      padding-top: 15px;
+    }
+
+    .header h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    /* Scanner Section */
+    .scanner-section {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
     }
 
     #reader {
-      width: 320px;
-      max-width: 100%;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Input Area */
+    .input-area {
       margin-bottom: 20px;
     }
 
     textarea, select {
       width: 100%;
-      max-width: 500px;
-      padding: 10px;
+      padding: 12px 15px;
       font-size: 16px;
-      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: var(--white);
+      font-family: 'Poppins', sans-serif;
+      transition: border 0.3s;
     }
 
-    button {
-      padding: 10px 20px;
-      background-color: #0055a4;
-      color: white;
+    textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: var(--primary);
+      color: var(--white);
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
-      margin-top: 5px;
+      font-weight: 500;
+      text-align: center;
+      width: 100%;
+      transition: all 0.3s;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    button:hover {
-      background-color: #003f7f;
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
 
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-accent {
+      background-color: var(--accent);
+    }
+
+    .btn-accent:hover {
+      background-color: #3d8b40;
+    }
+
+    /* Result Message */
     #result {
-      margin-top: 20px;
-      font-weight: bold;
+      margin: 20px 0;
+      padding: 12px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-align: center;
+      display: none;
     }
+
+    .success {
+      background-color: rgba(76, 175, 80, 0.2);
+      color: var(--accent);
+      display: block;
+    }
+
+    .error {
+      background-color: rgba(244, 67, 54, 0.2);
+      color: var(--error);
+      display: block;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.1);
+      margin: 25px 0;
+      position: relative;
+    }
+
+    .divider::after {
+      content: "OR";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--light-gray);
+      padding: 0 15px;
+      color: #777;
+      font-size: 14px;
+    }
+
+    /* Download Section */
+    .download-section {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .download-section h2 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .btn {
+        padding: 14px 20px;
+      }
+    }
+
+    /* Loading Indicator */
+    .loader {
+      display: none;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: var(--white);
+      animation: spin 1s ease-in-out infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn.loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .btn.loading .loader {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+   
+.Btn-Container {
+  display: flex;
+  width: 170px;
+  height: fit-content;
+  background-color: #1d2129;
+  border-radius: 40px;
+  box-shadow: 0px 5px 10px #bebebe;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+.icon-Container {
+  width: 45px;
+  height: 45px;
+  background-color: #f59aff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid #1d2129;
+}
+.text {
+  width: calc(170px - 45px);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1em;
+  letter-spacing: 1.2px;
+}
+.icon-Container svg {
+  transition-duration: 1.5s;
+}
+.Btn-Container:hover .icon-Container svg {
+  transition-duration: 1.5s;
+  animation: arrow 1s linear infinite;
+}
+@keyframes arrow {
+  0% {
+    opacity: 0;
+    margin-left: 0px;
+  }
+  100% {
+    opacity: 1;
+    margin-left: 10px;
+  }
+}
+
   </style>
 </head>
 <body>
-  <h1>Moderator QR Scanner</h1>
+  <!-- Particle Background -->
+  <div class="particles" id="particles"></div>
 
-  <div id="reader"></div>
+  <div class="container">
+    <div class="header">
+      <h1>Moderator QR Scanner</h1>
+      <p>Scan participant QR codes to mark attendance</p>
+    </div>
 
-  <textarea id="qrData" rows="5" placeholder="Or paste QR JSON here manually"></textarea><br>
-  <button onclick="markAttendance()">Mark Attendance</button>
+    <div class="scanner-section">
+      <div id="reader"></div>
+      
+      <div class="divider"></div>
+      
+      <div class="input-area">
+        <textarea id="qrData" rows="5" placeholder="Or paste QR JSON data here manually"></textarea>
+       
+<button class="Btn-Container" onclick="markAttendance()" style="display: flex;justify-content: center;align-items: center;">
+    <span class="text">Mark !</span>
+    <span class="icon-Container">
+      <svg
+        width="16"
+        height="19"
+        viewBox="0 0 16 19"
+        fill="nones"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="1.61321" cy="1.61321" r="1.5" fill="black"></circle>
+        <circle cx="5.73583" cy="1.61321" r="1.5" fill="black"></circle>
+        <circle cx="5.73583" cy="5.5566" r="1.5" fill="black"></circle>
+        <circle cx="9.85851" cy="5.5566" r="1.5" fill="black"></circle>
+        <circle cx="9.85851" cy="9.5" r="1.5" fill="black"></circle>
+        <circle cx="13.9811" cy="9.5" r="1.5" fill="black"></circle>
+        <circle cx="5.73583" cy="13.4434" r="1.5" fill="black"></circle>
+        <circle cx="9.85851" cy="13.4434" r="1.5" fill="black"></circle>
+        <circle cx="1.61321" cy="17.3868" r="1.5" fill="black"></circle>
+        <circle cx="5.73583" cy="17.3868" r="1.5" fill="black"></circle>
+      </svg>
+    </span>
+  </button>
+  
+       
+      </div>
+      
+      <div id="result"></div>
+    </div>
 
-  <hr style="margin: 30px 0;">
-
-  <h2>📥 Download Attendance CSV</h2>
-  <select id="eventSelect">
-    <option value="">-- Select Event --</option>
-  </select>
-  <button onclick="downloadCSV()">Download CSV</button>
-
-  <p id="result"></p>
+    <div class="download-section">
+      <h2>📥 Download Attendance CSV</h2>
+      <select id="eventSelect">
+        <option value="">-- Select Event --</option>
+      </select>
+      <button class="btn btn-accent" onclick="downloadCSV()">Download CSV</button>
+    </div>
+  </div>
 
   <!-- QR Scanner Library -->
   <script src="https://unpkg.com/html5-qrcode"></script>
   <script>
+    // Create particles
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const particleCount = window.innerWidth < 768 ? 30 : 60;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random properties
+        const size = Math.random() * 10 + 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${Math.random() * 100}vw`;
+        particle.style.top = `${Math.random() * 100}vh`;
+        
+        // Animation
+        const duration = Math.random() * 20 + 10;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        container.appendChild(particle);
+      }
+    }
+    
+    // Initialize particles
+    createParticles();
+
     const token = localStorage.getItem('token');
 
     async function markAttendance() {
+      const btn = document.querySelector('.btn');
+      const btnText = btn.querySelector('.btn-text');
+      const resultDiv = document.getElementById('result');
+      
+      btn.classList.add('loading');
+      btnText.textContent = 'Processing...';
+      resultDiv.style.display = 'none';
+      
       const input = document.getElementById('qrData').value;
+      
       try {
         const parsed = JSON.parse(input);
         const { event_id, participant_id } = parsed;
@@ -92,12 +438,22 @@
         });
 
         const data = await res.json();
-        document.getElementById('result').innerText = res.ok
-          ? "✅ " + data.msg
-          : "❌ " + data.msg;
+        
+        if (res.ok) {
+          resultDiv.className = 'success';
+          resultDiv.innerHTML = `✅ ${data.msg}<br><small>Participant ID: ${participant_id}</small>`;
+        } else {
+          resultDiv.className = 'error';
+          resultDiv.textContent = `❌ ${data.msg || 'Error marking attendance'}`;
+        }
       } catch (err) {
-        document.getElementById('result').innerText = "❌ Invalid QR data or error marking attendance.";
+        resultDiv.className = 'error';
+        resultDiv.textContent = "❌ Invalid QR data format or connection error";
         console.error(err);
+      } finally {
+        btn.classList.remove('loading');
+        btnText.textContent = 'Mark Attendance';
+        resultDiv.style.display = 'block';
       }
     }
 
@@ -108,6 +464,12 @@
         });
         const data = await res.json();
         const select = document.getElementById('eventSelect');
+        
+        // Clear existing options except the first one
+        while (select.options.length > 1) {
+          select.remove(1);
+        }
+        
         data.forEach(event => {
           const option = document.createElement('option');
           option.value = event.id;
@@ -122,9 +484,18 @@
     async function downloadCSV() {
       const eventId = document.getElementById('eventSelect').value;
       if (!eventId) {
-        alert("Please select an event.");
+        const resultDiv = document.getElementById('result');
+        resultDiv.className = 'error';
+        resultDiv.textContent = "❌ Please select an event first";
+        resultDiv.style.display = 'block';
         return;
       }
+
+      const btn = document.querySelector('.btn-accent');
+      const btnText = btn.querySelector('.btn-text');
+      
+      btn.classList.add('loading');
+      btnText.textContent = 'Preparing Download...';
 
       try {
         const res = await fetch(`http://localhost:5050/api/attendance/export?event_id=${eventId}`, {
@@ -133,8 +504,7 @@
 
         if (!res.ok) {
           const data = await res.json();
-          alert("❌ " + (data.msg || "Failed to download CSV"));
-          return;
+          throw new Error(data.msg || "Failed to download CSV");
         }
 
         const blob = await res.blob();
@@ -142,39 +512,68 @@
         const link = document.createElement('a');
         link.href = url;
         link.download = `attendance_${eventId}.csv`;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
         URL.revokeObjectURL(url);
       } catch (err) {
+        const resultDiv = document.getElementById('result');
+        resultDiv.className = 'error';
+        resultDiv.textContent = `❌ ${err.message}`;
+        resultDiv.style.display = 'block';
         console.error("CSV download error:", err);
-        alert("❌ Error downloading CSV.");
+      } finally {
+        btn.classList.remove('loading');
+        btnText.textContent = 'Download CSV';
       }
     }
 
     // QR Scanner Initialization
-    const html5QrCode = new Html5Qrcode("reader");
-    Html5Qrcode.getCameras().then(cameras => {
-      if (cameras && cameras.length > 0) {
-        const cameraId = cameras[0].id;
-        html5QrCode.start(
-          cameraId,
-          { fps: 10, qrbox: 250 },
-          (decodedText) => {
-            document.getElementById('qrData').value = decodedText;
-            markAttendance();
-            html5QrCode.stop();
-          },
-          () => {}
-        );
-      } else {
-        document.getElementById('result').innerText = "❌ No camera found.";
-      }
-    }).catch(err => {
-      document.getElementById('result').innerText = "❌ Unable to access camera.";
-      console.error(err);
-    });
+    function initializeScanner() {
+      const html5QrCode = new Html5Qrcode("reader");
+      
+      Html5Qrcode.getCameras().then(cameras => {
+        if (cameras && cameras.length > 0) {
+          const cameraId = cameras[0].id;
+          html5QrCode.start(
+            cameraId,
+            { 
+              fps: 10, 
+              qrbox: { width: 250, height: 250 },
+              aspectRatio: 1.0
+            },
+            (decodedText) => {
+              document.getElementById('qrData').value = decodedText;
+              html5QrCode.stop().then(() => {
+                markAttendance();
+              });
+            },
+            (errorMessage) => {
+              // Error handling
+            }
+          ).catch(err => {
+            console.error("Scanner start error:", err);
+          });
+        } else {
+          const resultDiv = document.getElementById('result');
+          resultDiv.className = 'error';
+          resultDiv.textContent = "❌ No camera found. Please use manual input.";
+          resultDiv.style.display = 'block';
+        }
+      }).catch(err => {
+        const resultDiv = document.getElementById('result');
+        resultDiv.className = 'error';
+        resultDiv.textContent = "❌ Camera access denied. Please enable camera permissions.";
+        resultDiv.style.display = 'block';
+        console.error(err);
+      });
+    }
 
-    // Load event dropdown
-    window.onload = loadEvents;
+    // Initialize on load
+    window.onload = function() {
+      loadEvents();
+      initializeScanner();
+    };
   </script>
 </body>
 </html>
