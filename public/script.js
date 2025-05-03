@@ -119,32 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const infoBox = document.getElementById('infoBox');
   
     // Password toggle functionality
-    const togglePassword = document.querySelector('#togglePassword');
-    const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
-    const password = document.querySelector('#password');
-    const confirmPassword = document.querySelector('#confirm_password');
-    const passwordError = document.getElementById('password-error');
-  
-    // Toggle password visibility
-    function togglePasswordVisibility(inputElement, toggleElement) {
-      const type = inputElement.getAttribute('type') === 'password' ? 'text' : 'password';
-      inputElement.setAttribute('type', type);
-      toggleElement.classList.toggle('fa-eye-slash');
-    }
-  
-    // Initialize password toggle
-    if (togglePassword && password) {
-      togglePassword.addEventListener('click', function() {
-        togglePasswordVisibility(password, this);
-      });
-    }
-  
-    if (toggleConfirmPassword && confirmPassword) {
-      toggleConfirmPassword.addEventListener('click', function() {
-        togglePasswordVisibility(confirmPassword, this);
-      });
-    }
-  
+   
     // Password validation function
     function validatePasswords() {
       if (password.value !== confirmPassword.value) {
