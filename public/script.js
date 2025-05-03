@@ -311,7 +311,9 @@ document.addEventListener('DOMContentLoaded', function() {
           if (data.members) {
             infoBox.innerHTML += `<p><b>Team Members:</b><ul>${data.members.map(m => `<li>${m.name}</li>`).join('')}</ul></p>`;
           }
-          
+          if(data.team_name){
+            infoBox.innerHTML += `<p><b>Team Name:</b> ${data.team_name}</p>`;
+          }
           // Animate success message
           successMessage.querySelector('i')?.classList.add('animated');
   
