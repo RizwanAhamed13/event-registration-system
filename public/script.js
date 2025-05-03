@@ -1,13 +1,16 @@
 // Wait for DOM to fully load
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all components
     initParticlesBackground();
     initCollegeLogos();
     initFormHandling();
     initAnimations();
+    
+    // Mark page as loaded
     document.body.classList.add('page-loaded');
 });
 
-// Initialize particles.js background with interactive particles
+// Initialize particles.js background
 function initParticlesBackground() {
     if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
@@ -120,6 +123,7 @@ function initParticlesBackground() {
     }
 }
 
+// Initialize college logos
 function initCollegeLogos() {
     const logos = document.querySelectorAll('.logo');
     logos.forEach(logo => {
@@ -132,7 +136,7 @@ function initCollegeLogos() {
     });
 }
 
-// Form handling and validation
+// Main form handling function
 function initFormHandling() {
     const registrationForm = document.getElementById('registration-form');
     const formSteps = document.querySelectorAll('.form-step');
@@ -141,70 +145,93 @@ function initFormHandling() {
     const prevButtons = document.querySelectorAll('.prev-button');
     const successMessage = document.getElementById('success-message');
     const infoBox = document.getElementById('infoBox');
+    const password = document.querySelector('#password');
+    const confirmPassword = document.querySelector('#confirm_password');
+    const passwordError = document.getElementById('password-error');
+    const togglePassword = document.querySelector('#togglePassword');
+    const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+    const collegeMcet = document.querySelector('#college_mcet');
+    const collegeOther = document.querySelector('#college_other');
+    const otherCollegeInput = document.querySelector('#other_college_name');
+    const termsContainer = document.querySelector('#terms-container');
+    const termsCheckbox = document.querySelector('#terms');
 
-    // Handle next button clicks
+    // Password toggle functionality
+    if (togglePassword && password) {
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    if (toggleConfirmPassword && confirmPassword) {
+        toggleConfirmPassword.addEventListener('click', function() {
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    // College selection logic
+    function handleCollegeSelection() {
+        if (collegeOther.checked) {
+            otherCollegeInput.style.display = 'block';
+            termsContainer.style.display = 'block';
+            if (termsCheckbox) termsCheckbox.required = true;
+        } else {
+            otherCollegeInput.style.display = 'none';
+            termsContainer.style.display = 'none';
+            if (termsCheckbox) termsCheckbox.required = false;
+        }
+    }
+
+    // Password validation
+    function validatePasswords() {
+        if (password.value !== confirmPassword.value) {
+            passwordError.style.display = 'block';
+            return false;
+        }
+        passwordError.style.display = 'none';
+        return true;
+    }
+
+    // Navigation functions
+    function goToNextStep(currentStep, nextStepNum) {
+        const currentStepEl = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+        const nextStepEl = document.querySelector(`.form-step[data-step="${nextStepNum}"]`);
+        
+        if (currentStepEl && nextStepEl) {
+            currentStepEl.classList.remove('active');
+            nextStepEl.classList.add('active');
+            
+            document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+            document.querySelector(`.progress-step[data-step="${nextStepNum}"]`).classList.add('active');
+        }
+    }
+
+    // Next button handlers
     nextButtons.forEach(button => {
         button.addEventListener('click', function() {
             const currentStep = this.closest('.form-step');
             const currentStepNum = parseInt(currentStep.dataset.step);
-            const nextStepNum = currentStepNum + 1;
-            const nextStep = document.querySelector(`.form-step[data-step="${nextStepNum}"]`);
+            
+            if (currentStepNum === 1 && !validatePasswords()) {
+                return false;
+            }
 
-            // Validate current step before proceeding
             if (validateStep(currentStep)) {
-                // Update steps
-                currentStep.classList.remove('active');
-                nextStep.classList.add('active');
-
-                // Update progress indicators
-                progressSteps.forEach(step => {
-                    if (parseInt(step.dataset.step) === currentStepNum) {
-                        step.classList.add('completed');
-                    } else if (parseInt(step.dataset.step) === nextStepNum) {
-                        step.classList.add('active');
-                    }
-                });
-
-                // Scroll to top
-                scrollToTop();
-
-                // Add fade-in animation to the next step
-                nextStep.style.animation = 'none';
-                nextStep.offsetHeight; // Trigger reflow
-                nextStep.style.animation = 'fadeIn 0.5s ease-out';
+                goToNextStep(currentStepNum, currentStepNum + 1);
             }
         });
     });
 
-    // Handle previous button clicks
+    // Previous button handlers
     prevButtons.forEach(button => {
         button.addEventListener('click', function() {
             const currentStep = this.closest('.form-step');
             const currentStepNum = parseInt(currentStep.dataset.step);
-            const prevStepNum = currentStepNum - 1;
-            const prevStep = document.querySelector(`.form-step[data-step="${prevStepNum}"]`);
-
-            // Update steps
-            currentStep.classList.remove('active');
-            prevStep.classList.add('active');
-
-            // Update progress indicators
-            progressSteps.forEach(step => {
-                if (parseInt(step.dataset.step) === currentStepNum) {
-                    step.classList.remove('active');
-                } else if (parseInt(step.dataset.step) === prevStepNum) {
-                    step.classList.remove('completed');
-                    step.classList.add('active');
-                }
-            });
-
-            // Scroll to top of form
-            scrollToTop();
-
-            // Add fade-in animation to the previous step
-            prevStep.style.animation = 'none';
-            prevStep.offsetHeight; // Trigger reflow
-            prevStep.style.animation = 'fadeIn 0.5s ease-out';
+            goToNextStep(currentStepNum, currentStepNum - 1);
         });
     });
 
@@ -213,7 +240,7 @@ function initFormHandling() {
         registrationForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Validate last step before submitting
+            // Validate last step
             const lastStep = document.querySelector('.form-step:last-child');
             if (!validateStep(lastStep)) {
                 return;
@@ -224,7 +251,7 @@ function initFormHandling() {
             const body = {};
             formData.forEach((v, k) => { if (v) body[k] = v });
 
-            // Basic email validation
+            // Basic validations
             if (!validateEmail(body.email)) {
                 showError(document.querySelector('#email'), "❌ Invalid email format.");
                 return;
@@ -235,18 +262,13 @@ function initFormHandling() {
                 return;
             }
 
-            if (body.team_code && body.team_name) {
-                showError(document.querySelector('#team_code'), "❌ Please choose only one: team code or team name.");
-                return;
-            }
-
             try {
                 // Show loading state
                 const submitBtn = document.querySelector('.submit-button');
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-                // Send request to backend
+                // Send to backend
                 const res = await fetch("http://localhost:5500/api/auth/register", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -262,16 +284,19 @@ function initFormHandling() {
                     return;
                 }
                 
-                // Show success message and hide form
+                // Show success message
                 registrationForm.style.display = 'none';
                 successMessage.style.display = 'block';
                 
-                // Show team info - EXACTLY AS IN YOUR BACKEND CONNECTING CODE
+                // Display team info
                 infoBox.style.display = "block";
                 infoBox.innerHTML = '';
                 
                 if (data.team_code) {
                     infoBox.innerHTML += `<p><b>Your Team Code:</b> ${data.team_code}</p>`;
+                }
+                if (data.team_name) {
+                    infoBox.innerHTML += `<p><b>Team Name:</b> ${data.team_name}</p>`;
                 }
                 if (data.team_leader) {
                     infoBox.innerHTML += `<p><b>Team Leader:</b> ${data.team_leader}</p>`;
@@ -279,11 +304,8 @@ function initFormHandling() {
                 if (data.members) {
                     infoBox.innerHTML += `<p><b>Team Members:</b><ul>${data.members.map(m => `<li>${m.name}</li>`).join('')}</ul></p>`;
                 }
-                if (data.team_name) {
-                    infoBox.innerHTML += `<p><b>Team Name:</b> ${data.team_name}</p>`;
-                }
                 
-                // Animate success message
+                // Animate success icon
                 successMessage.querySelector('i')?.classList.add('animated');
 
             } catch (err) {
@@ -295,220 +317,90 @@ function initFormHandling() {
         });
     }
 
-    // Floating label animation for inputs
-    const formInputs = document.querySelectorAll('input, select');
-    formInputs.forEach(input => {
-        // Set placeholder to empty string for floating label effect
-        if (input.type !== 'checkbox') {
-            input.placeholder = '';
-        }
-
-        // Add focused class when input is focused
-        input.addEventListener('focus', function() {
-            this.parentNode.classList.add('focused');
-        });
-
-        // Remove focused class when input loses focus
-        input.addEventListener('blur', function() {
-            this.parentNode.classList.remove('focused');
-
-            // Validate the field on blur
-            if (this.required) {
-                validateField(this);
-            }
-        });
-
-        // For input elements, validate on input
-        if (input.tagName === 'INPUT' && input.type !== 'checkbox') {
-            input.addEventListener('input', function() {
-                if (this.required) {
-                    validateField(this);
-                }
-            });
-        }
-    });
-}
-
-// Helper function to display error messages
-function showError(field, message) {
-    // Remove any existing error messages
-    const existingError = field.parentNode.querySelector('.error-message');
-    if (existingError) {
-        existingError.remove();
-    }
-
-    // Add error class to input
-    field.classList.add('error');
-
-    // Create and append error message
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-
-    if (field.type === 'checkbox') {
+    // Helper functions
+    function showError(field, message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
         field.parentNode.appendChild(errorDiv);
-    } else {
-        field.parentNode.appendChild(errorDiv);
+        field.classList.add('error', 'shake');
+        setTimeout(() => field.classList.remove('shake'), 500);
     }
 
-    // Add shake animation
-    field.classList.add('shake');
-    setTimeout(() => field.classList.remove('shake'), 500);
+    function validateField(field) {
+        field.classList.remove('error');
+        const errorMessage = field.parentNode.querySelector('.error-message');
+        if (errorMessage) errorMessage.remove();
 
-    return false;
-}
-
-// Validate each field
-function validateField(field) {
-    // Reset error state
-    field.classList.remove('error');
-    const errorMessage = field.parentNode.querySelector('.error-message');
-    if (errorMessage) {
-        errorMessage.remove();
-    }
-
-    // Validate based on input type
-    if (field.value.trim() === '' && field.required) {
-        showError(field, 'This field is required');
-        return false;
-    } else if (field.type === 'email' && !validateEmail(field.value)) {
-        showError(field, 'Please enter a valid email address');
-        return false;
-    } else if (field.id === 'roll_number' && field.value.length < 5) {
-        showError(field, 'Roll number must be at least 5 characters');
-        return false;
-    }
-
-    return true;
-}
-
-// Validate an entire step
-function validateStep(step) {
-    let isValid = true;
-    const inputs = step.querySelectorAll('input[required], select[required]');
-
-    inputs.forEach(input => {
-        if (!validateField(input)) {
-            isValid = false;
+        if (field.value.trim() === '' && field.required) {
+            showError(field, 'This field is required');
+            return false;
         }
-    });
-
-    // Check terms checkbox on final step
-    if (step.dataset.step === '3') {
-        const termsCheckbox = step.querySelector('#terms');
-        if (termsCheckbox && !termsCheckbox.checked) {
-            showError(termsCheckbox, 'You must agree to the terms and conditions');
-            isValid = false;
-        }
+        return true;
     }
 
-    return isValid;
-}
+    function validateStep(step) {
+        let isValid = true;
+        step.querySelectorAll('[required]').forEach(field => {
+            if (!validateField(field)) isValid = false;
+        });
+        return isValid;
+    }
 
-// Email validation function
-function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
 
-// Helper function to scroll to the top of the form
-function scrollToTop() {
-    window.scrollTo({
-        top: document.querySelector('.registration-container').offsetTop,
-        behavior: 'smooth'
-    });
+    function scrollToTop() {
+        window.scrollTo({
+            top: document.querySelector('.registration-container').offsetTop,
+            behavior: 'smooth'
+        });
+    }
+
+    // Initialize college selection
+    if (collegeMcet && collegeOther) {
+        collegeMcet.addEventListener('change', handleCollegeSelection);
+        collegeOther.addEventListener('change', handleCollegeSelection);
+        handleCollegeSelection();
+    }
 }
 
 // Initialize animations
 function initAnimations() {
+    // Button animations
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('mouseenter', () => {
+            button.style.transform = 'translateY(-3px)';
+            button.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+        });
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = '';
+            button.style.boxShadow = '';
+        });
+    });
+
     // Add animation styles
-    addAnimationStyles();
-
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-3px)';
-            this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-        });
-
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-            this.style.boxShadow = '';
-        });
-
-        button.addEventListener('click', function() {
-            this.classList.add('button-click');
-            setTimeout(() => {
-                this.classList.remove('button-click');
-            }, 300);
-        });
-    });
-
-    document.addEventListener('mousemove', function(e) {
-        const logos = document.querySelectorAll('.logo');
-        const mouseX = e.clientX / window.innerWidth - 0.5;
-        const mouseY = e.clientY / window.innerHeight - 0.5;
-
-        logos.forEach(logo => {
-            logo.style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px)`;
-        });
-    });
-}
-
-// Add keyframe animations via style tag
-function addAnimationStyles() {
     const style = document.createElement('style');
     style.textContent = `
-        @keyframes button-click {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.95); }
-            100% { transform: scale(1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .button-click {
-            animation: button-click 0.3s ease-out;
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20%,60% { transform: translateX(-5px); }
+            40%,80% { transform: translateX(5px); }
         }
-
         .success-message i.animated {
             animation: success-pulse 1.5s infinite;
         }
-
         @keyframes success-pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
-        }
-
-        /* Add smooth input highlighting */
-        .form-group.focused {
-            transform: translateY(-5px);
-            transition: transform 0.3s ease;
-        }
-
-        /* Error styles */
-        .error-message {
-            color: #ff6b6b;
-            font-size: 0.8rem;
-            margin-top: 5px;
-        }
-
-        .error {
-            border-color: #ff6b6b !important;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-
-        .shake {
-            animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     `;
     document.head.appendChild(style);
