@@ -6,8 +6,7 @@
     <title>College Event Registration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    
-      <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="particles-container" id="particles-js"></div>
@@ -105,10 +104,21 @@
                       <div class="input-highlight"></div>
                     </div>
                   
-                    <div class="form-group">
-                      <input type="text" id="college_name" name="college_name" required>
-                      <label for="college_name" class="floating-label">College Name</label>
-                      <div class="input-highlight"></div>
+                    <!-- Updated College Selection -->
+                     <label style="color: #2a75c7;">College Name</label><br>
+                    <div class="college-selection">
+                        <div class="college-option">
+                            <input type="radio" id="college_mcet" name="college" value="DR. Mahalingam College of Engineering and Technology" checked>
+                            <label for="college_mcet">DR. Mahalingam College of Engineering and Technology</label>
+                        </div>
+                        <div class="college-option">
+                            <input type="radio" id="college_other" name="college" value="other">
+                            <label for="college_other">Other</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="other_college_name" name="other_college_name" class="other-college-input" placeholder="Enter your college name">
+                            <div class="input-highlight"></div>
+                        </div>
                     </div>
                   
                     <div class="form-group">
@@ -119,7 +129,7 @@
                   
                     <div class="form-buttons">
                       <button type="button" class="prev-button"><i class="fas fa-arrow-left"></i> Previous</button>
-                      <button type="button" class="next-button">Next <i class="fas fa-arrow-right"></i></button>
+                      <button type="button" class="next-button" id="step2-next">Next <i class="fas fa-arrow-right"></i></button>
                     </div>
                 </div>
 
@@ -136,9 +146,10 @@
                         <label for="team_name" class="floating-label">Or Create a New Team</label>
                         <div class="input-highlight"></div>
                     </div>
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <label for="terms">I agree to the terms and conditions</label>
+                    <!-- Terms and conditions (only shown when "Other" college is selected) -->
+                    <div class="form-group checkbox-group" id="terms-container" style="display: none;">
+                        <input type="checkbox" id="terms" name="terms">
+                        <label for="terms">I agree to the terms and conditions (required for non-MCET students)</label>
                     </div>
                     <div class="form-buttons">
                         <button type="button" class="prev-button"><i class="fas fa-arrow-left"></i> Previous</button>
@@ -171,6 +182,12 @@
             const password = document.querySelector('#password');
             const confirmPassword = document.querySelector('#confirm_password');
             const step1NextButton = document.querySelector('#step1-next');
+            const step2NextButton = document.querySelector('#step2-next');
+            const collegeMcet = document.querySelector('#college_mcet');
+            const collegeOther = document.querySelector('#college_other');
+            const otherCollegeInput = document.querySelector('#other_college_name');
+            const termsContainer = document.querySelector('#terms-container');
+            const termsCheckbox = document.querySelector('#terms');
 
             // Initialize toggles to be visible when there's content
             function checkPasswordFields() {
@@ -205,8 +222,65 @@
                 togglePasswordVisibility(confirmPassword, this);
             });
 
-            // Initialize on page load
-            checkPasswordFields();
+            // College selection logic
+            function handleCollegeSelection() {
+                if (collegeOther.checked) {
+                    otherCollegeInput.style.display = 'block';
+                    termsContainer.style.display = 'block';
+                    termsCheckbox.required = true;
+                } else {
+                    otherCollegeInput.style.display = 'none';
+                    termsContainer.style.display = 'none';
+                    termsCheckbox.required = false;
+                }
+            }
+
+            // Form navigation functions
+            function goToNextStep(currentStep, nextStepNum) {
+                const currentStepEl = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+                const nextStepEl = document.querySelector(`.form-step[data-step="${nextStepNum}"]`);
+                
+                if (currentStepEl && nextStepEl) {
+                    currentStepEl.classList.remove('active');
+                    nextStepEl.classList.add('active');
+                    
+                    document.querySelector(`.progress-step[data-step="${currentStep}"]`).classList.remove('active');
+                    document.querySelector(`.progress-step[data-step="${nextStepNum}"]`).classList.add('active');
+                }
+            }
+
+            function validateStep(stepNum) {
+                if (stepNum === 1) {
+                    if (!validatePassword()) {
+                        return false;
+                    }
+                    return true;
+                } else if (stepNum === 2) {
+                    // Validate academic details step
+                    const requiredFields = document.querySelectorAll('.form-step[data-step="2"] [required]');
+                    let isValid = true;
+                    
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            isValid = false;
+                            field.classList.add('error');
+                        } else {
+                            field.classList.remove('error');
+                        }
+                    });
+                    
+                    // Special validation for other college name
+                    if (collegeOther.checked && !otherCollegeInput.value.trim()) {
+                        isValid = false;
+                        otherCollegeInput.classList.add('error');
+                    } else {
+                        otherCollegeInput.classList.remove('error');
+                    }
+                    
+                    return isValid;
+                }
+                return true;
+            }
 
             function validatePassword() {
                 const passwordValue = password.value;
@@ -222,58 +296,53 @@
                 }
             }
 
-            step1NextButton.addEventListener('click', function(e) {
-                if (!validatePassword()) {
-                    e.preventDefault();
-                    return false;
-                }
-                
-                const currentStep = document.querySelector('.form-step.active');
-                const nextStep = currentStep.nextElementSibling;
-                
-                if (nextStep) {
-                    currentStep.classList.remove('active');
-                    nextStep.classList.add('active');
-                    
-                    const currentStepNum = parseInt(currentStep.dataset.step);
-                    document.querySelector(`.progress-step[data-step="${currentStepNum}"]`).classList.remove('active');
-                    document.querySelector(`.progress-step[data-step="${currentStepNum + 1}"]`).classList.add('active');
+            // Event listeners for next buttons
+            step1NextButton.addEventListener('click', function() {
+                if (validateStep(1)) {
+                    goToNextStep(1, 2);
                 }
             });
 
-            let validationAttempted = false;
-            [password, confirmPassword].forEach(field => {
-                field.addEventListener('input', function() {
-                    if (validationAttempted) {
-                        validatePassword();
-                    }
+            step2NextButton.addEventListener('click', function() {
+                if (validateStep(2)) {
+                    goToNextStep(2, 3);
+                }
+            });
+
+            // Previous button functionality
+            document.querySelectorAll('.prev-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const currentStep = this.closest('.form-step').dataset.step;
+                    const currentStepNum = parseInt(currentStep);
+                    goToNextStep(currentStepNum, currentStepNum - 1);
                 });
             });
 
+            // Initialize college selection and other elements
+            collegeMcet.addEventListener('change', handleCollegeSelection);
+            collegeOther.addEventListener('change', handleCollegeSelection);
+            handleCollegeSelection();
+            checkPasswordFields();
+
+            // Form submission handling
             document.getElementById('registration-form').addEventListener('submit', function(e) {
-                if (!validatePassword()) {
+                // Additional validation for other college name if selected
+                if (collegeOther.checked && !otherCollegeInput.value.trim()) {
                     e.preventDefault();
+                    alert('Please enter your college name');
+                    return false;
+                }
+                
+                // Validate terms checkbox if other college is selected
+                if (collegeOther.checked && !termsCheckbox.checked) {
+                    e.preventDefault();
+                    alert('Please agree to the terms and conditions');
                     return false;
                 }
                 
                 document.getElementById('registration-form').style.display = 'none';
                 document.getElementById('success-message').style.display = 'block';
-            });
-
-            document.querySelectorAll('.prev-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const currentStep = this.closest('.form-step');
-                    const prevStep = currentStep.previousElementSibling;
-                    
-                    if (prevStep) {
-                        currentStep.classList.remove('active');
-                        prevStep.classList.add('active');
-                        
-                        const currentStepNum = parseInt(currentStep.dataset.step);
-                        document.querySelector(`.progress-step[data-step="${currentStepNum}"]`).classList.remove('active');
-                        document.querySelector(`.progress-step[data-step="${currentStepNum - 1}"]`).classList.add('active');
-                    }
-                });
+                e.preventDefault(); // Remove this line if you want actual form submission
             });
 
             // Initialize particles.js if available
@@ -283,7 +352,6 @@
                 });
             }
 
-            // Add page-loaded class to body when everything is ready
             document.body.classList.add('page-loaded');
         });
     </script>
