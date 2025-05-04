@@ -268,8 +268,13 @@ function initFormHandling() {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
+<<<<<<< Updated upstream
                 // Send to backend
                 const res = await fetch("http://localhost:5500/api/auth/register", {
+=======
+                // Send request to backend
+                const res = await fetch("http://localhost:5050/api/auth/register", {
+>>>>>>> Stashed changes
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
