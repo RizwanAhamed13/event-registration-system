@@ -2,129 +2,803 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Ignite Events</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ignite Events | College Event Portal</title>
+  <!-- Professional Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* Base Styles */
+    :root {
+      --primary-blue: #1a56db;
+      --secondary-blue: #3b82f6;
+      --dark-blue: #1e40af;
+      --light-blue: #dbeafe;
+      --white: #ffffff;
+      --light-gray: #f8fafc;
+      --medium-gray: #e2e8f0;
+      --dark-gray: #64748b;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      margin-left: 220px;
-      background-color: #fdfdfd;
+      font-family: 'Roboto', sans-serif;
+      overflow-x: hidden;
+      background-color: var(--white);
+      position: relative;
+      min-height: 100vh;
+      color: #334155;
+      line-height: 1.6;
     }
-    .event {
-      border: 1px solid #ccc;
-      padding: 15px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      background-color: #f9f9f9;
-      transition: background 0.2s ease;
+    
+    /* Professional Font for Headings */
+    h1, h2, h3, h4, .main-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
     }
-    .event:hover {
-      background-color: #f0f0f0;
-    }
-    .sidebar {
+
+    /* Particle Net Background */
+    #particles-js {
       position: fixed;
-      left: 0;
+      width: 100%;
+      height: 100%;
       top: 0;
-      bottom: 0;
-      width: 200px;
-      background: #f0f0f0;
-      padding: 20px;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      left: 0;
+      z-index: -1;
+      background-color: var(--white);
     }
+    
+    /* Shining Blue Top Header Section */
+    .top-header {
+      background: linear-gradient(90deg, 
+        var(--primary-blue) 0%, 
+        var(--secondary-blue) 50%, 
+        var(--primary-blue) 100%);
+      width: 100%;
+      padding: 1rem 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 100;
+      overflow: hidden;
+    }
+    
+    /* Shining animation */
+    .top-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+      0% { left: -100%; }
+      20% { left: 100%; }
+      100% { left: 100%; }
+    }
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 0 5%;
+      position: relative;
+    }
+    
+    .college-logo {
+      height: 80px;
+      width: auto;
+     
+      transition: all 0.3s ease;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    
+    .main-logo {
+      font-size: 1.8rem;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    
+    .main-logo i {
+      margin-right: 0.5rem;
+      color: var(--white);
+    }
+    
+    /* Sidebar Styles */
+    .sidebar {
+      width: 220px;
+      background: var(--white);
+      padding: 2rem 1.5rem;
+      height: calc(100vh - 80px);
+      position: fixed;
+      top: 80px;
+      left: 0;
+      border-right: 1px solid var(--medium-gray);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+    
     .sidebar a {
-      display: block;
-      margin: 12px 0;
-      color: #333;
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      margin: 0.5rem 0;
+      color: var(--dark-gray);
       text-decoration: none;
-      font-weight: bold;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.3s ease;
     }
+    
+    .sidebar a i {
+      margin-right: 0.8rem;
+      width: 20px;
+      text-align: center;
+    }
+    
     .sidebar a:hover {
-      text-decoration: underline;
+      background-color: var(--light-blue);
+      color: var(--primary-blue);
+      transform: translateX(5px);
     }
-    .content {
-      max-width: 800px;
+    
+    .sidebar a.active {
+      background-color: var(--light-blue);
+      color: var(--primary-blue);
+      font-weight: 600;
+    }
+    
+    /* Main Content Styles */
+    .main-content {
+      margin-left: 220px;
+      padding: 2rem 3rem;
+      min-height: calc(100vh - 160px);
+      transition: all 0.3s ease;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    h1 {
+      color: var(--primary-blue);
+      font-size: 2.2rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--primary-blue);
+      border-radius: 2px;
+    }
+    
+    .welcome-text {
+      font-size: 1.1rem;
+      color: var(--dark-gray);
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
+    
+    /* Events Grid */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .event-card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid var(--medium-gray);
+      cursor: pointer;
+    }
+    
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      border-color: var(--secondary-blue);
+    }
+    
+    .event-image {
+      height: 160px;
+      background: var(--light-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-blue);
+      font-size: 3rem;
+    }
+    
+    .event-details {
+      padding: 1.5rem;
+    }
+    
+    .event-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary-blue);
+      margin-bottom: 0.5rem;
+    }
+    
+    .event-date {
+      display: flex;
+      align-items: center;
+      color: var(--dark-gray);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .event-date i {
+      margin-right: 0.5rem;
+    }
+    
+    .event-description {
+      color: var(--dark-gray);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    /* Footer Styles */
+    .footer {
+      background: var(--primary-blue);
+      color: var(--white);
+      padding: 2rem 5%;
+      text-align: center;
+      margin-top: 3rem;
+      margin-left: 220px;
+      width: calc(100% - 220px);
+      transition: all 0.3s ease;
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .footer-links a {
+      color: var(--white);
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+    
+    .footer-links a:hover {
+      opacity: 0.8;
+    }
+    
+    .copyright {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    /* Loading State */
+    .loading-events {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--light-blue);
+      border-top: 4px solid var(--primary-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      background: var(--light-gray);
+      border-radius: 12px;
+      margin-top: 2rem;
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--dark-gray);
+      margin-bottom: 1rem;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 1600px) {
+      .header-container {
+        padding: 0 3%;
+      }
+      
+      .main-content {
+        padding: 2rem;
+      }
+      
+      .footer {
+        padding-left: 3%;
+        padding-right: 3%;
+      }
+    }
+    
+    @media (max-width: 1200px) {
+      .sidebar {
+        width: 200px;
+        padding: 1.5rem 1rem;
+      }
+      
+      .main-content {
+        margin-left: 200px;
+        max-width: calc(100% - 200px);
+      }
+      
+      .footer {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+      }
+    }
+    
+    @media (max-width: 1024px) {
+      .events-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+      
+      .main-logo {
+        font-size: 1.6rem;
+      }
+      
+      .college-logo {
+        height: 50px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .top-header {
+        padding: 0.8rem 0;
+      }
+      
+      .header-container {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 0 1rem;
+      }
+      
+      .logo-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .main-logo {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .college-logo {
+        margin-top: 0.5rem;
+      }
+      
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-right: none;
+        border-bottom: 1px solid var(--medium-gray);
+        top: auto;
+      }
+      
+      .sidebar a {
+        margin: 0.3rem;
+        padding: 0.6rem 0.8rem;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 1.5rem;
+        min-height: calc(100vh - 240px);
+      }
+      
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .footer {
+        margin-left: 0;
+        width: 100%;
+        padding: 1.5rem;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .event-card {
+        max-width: 100%;
+      }
+      
+      .sidebar a {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+      
+      .sidebar a i {
+        margin-right: 0.5rem;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .main-logo {
+        font-size: 1.4rem;
+      }
+      
+      .college-logo {
+        height: 75px;
+      }
+    }
+    .about-us-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: var(--primary-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      border: none;
+      outline: none;
+      text-decoration: none;
+    }
+    
+    .about-us-button:hover {
+      background-color: var(--dark-blue);
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .about-us-button:active {
+      transform: scale(0.95);
+    }
+    
+    @media (max-width: 768px) {
+      .about-us-button {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <a href="index.html">🏠 Home</a>
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="login.html" id="loginBtn">🔑 Login</a>
-    <a href="signup.html" id="signupBtn">📝 Signup</a>
-    <a href="#" id="logoutBtn" style="display:none">🚪 Logout</a>
-    <a href="admin.html" id="adminPageBtn" style="display:none">🛠 Admin Page</a>
-    <a href="moderator.html" id="moderatorPageBtn" style="display:none">🧑‍🏫 Moderator Panel</a>
+  <div id="particles-js"></div>
+  
+  <!-- Shining Blue Top Header Section -->
+  <div class="top-header">
+    <div class="header-container">
+      <div class="logo-container">
+        <img src="mcet2-removebg-preview.png" alt="College Logo" class="college-logo" style="margin-right: auto; height: 90px;">
+        <div class="main-logo">
+          <span>Central Portal</span>
+        </div>
+        <img src="ig.png" alt="College Logo" class="college-logo" style="margin-left: auto;">
+      </div>
+    </div>
   </div>
+  
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar">
+    <a href="index.html" class="active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="dashboard.html">
+      <i class="fas fa-chart-bar"></i>
+      <span>Dashboard</span>
+    </a>
+    <a href="login.html" id="loginBtn">
+      <i class="fas fa-key"></i>
+      <span>Login</span>
+    </a>
+    <a href="signup.html" id="signupBtn">
+      <i class="fas fa-user-plus"></i>
+      <span>Sign Up</span>
+    </a>
+    <a href="#" id="logoutBtn" style="display:none">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+    </a>
+    <a href="admin.html" id="adminPageBtn" style="display:none">
+      <i class="fas fa-tools"></i>
+      <span>Admin</span>
+    </a>
+    <a href="moderator.html" id="moderatorPageBtn" style="display:none">
+      <i class="fas fa-user-shield"></i>
+      <span>Moderator</span>
+    </a>
+  </nav>
+  
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Upcoming Events</h1>
+    </div>
+    
+    <p class="welcome-text">
+      Discover and register for exciting college events. Click on any event to view details and participate.
+    </p>
+    
+    <div id="eventList" class="loading-events">
+      <div class="spinner"></div>
+    </div>
+  </main>
+  
 
-  <div class="content">
-    <h1>🔥 Welcome to Ignite Events</h1>
-    <p>Select an event to view details and register:</p>
-    <div id="eventList">Loading events...</div>
-  </div>
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="ig.png" alt="College Logo" class="college-logo" style="margin-left: auto;">
+      </div>
+      <div class="footer-links">
+        <img src="mcet2-removebg-preview.png" alt="College Logo" class="college-logo" style="margin-left: auto;">
+      </div>
+    </div>
+ 
+    <div class="copyright">
+      &copy; 2023 Ignite . All rights reserved.
+    </div>
+  </footer>
+  
+  <a href="about.html" class="about-us-button" id="aboutBtn" title="About Us">
+    <img src="about.png" alt="about.png" style="height: 60px;">
+  </a>
 
+ 
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
   <script>
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user'));
 
-    // Toggle sidebar buttons based on auth state
-    if (token) {
-      document.getElementById('loginBtn').style.display = 'none';
-      document.getElementById('signupBtn').style.display = 'none';
-      document.getElementById('logoutBtn').style.display = 'block';
-    }
-
-    if (user && user.role === 'admin') {
-      document.getElementById('adminPageBtn').style.display = 'block';
-    }
-
-    if (user && user.role === 'moderator') {
-      document.getElementById('moderatorPageBtn').style.display = 'block';
-    }
-
-    // Logout logic
-    document.getElementById('logoutBtn').onclick = () => {
-      localStorage.clear();
-      window.location.href = 'login.html';
-    };
-
-    // Load events from backend
-    async function loadEvents() {
-      try {
-        const res = await fetch('http://localhost:5050/api/event/list');
-        const events = await res.json();
-
-        const container = document.getElementById('eventList');
-        container.innerHTML = '';
-
-        if (events.length === 0) {
-          container.textContent = '⚠️ No events found.';
-          return;
-        }
-
-        events.forEach(event => {
-          const div = document.createElement('div');
-          div.className = 'event';
-          div.textContent = event.name;
-          div.onclick = () => {
-            if (!token) {
-              localStorage.setItem('redirectToEventId', event.id);
-              window.location.href = 'login.html';
-              return;
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+          "particles": {
+            "number": {
+              "value": 70,
+              "density": {
+                "enable": true,
+                "value_area": 800
+              }
+            },
+            "color": {
+              "value": "#1a56db"
+            },
+            "shape": {
+              "type": "circle",
+              "stroke": {
+                "width": 0,
+                "color": "#000000"
+              }
+            },
+            "opacity": {
+              "value": 0.5,
+              "random": true,
+              "anim": {
+                "enable": false,
+                "speed": 1,
+                "opacity_min": 0.1,
+                "sync": false
+              }
+            },
+            "size": {
+              "value": 3,
+              "random": true,
+              "anim": {
+                "enable": false,
+                "speed": 40,
+                "size_min": 0.1,
+                "sync": false
+              }
+            },
+            "line_linked": {
+              "enable": true,
+              "distance": 150,
+              "color": "#1a56db",
+              "opacity": 0.3,
+              "width": 1
+            },
+            "move": {
+              "enable": true,
+              "speed": 1.5,
+              "direction": "none",
+              "random": false,
+              "straight": false,
+              "out_mode": "out",
+              "bounce": false,
+              "attract": {
+                "enable": false,
+                "rotateX": 600,
+                "rotateY": 1200
+              }
             }
-
-            localStorage.setItem('selectedEventId', event.id);
-            window.location.href = 'enroll.html'; // renamed to enroll.html if you wish
-          };
-          container.appendChild(div);
+          },
+          "interactivity": {
+            "detect_on": "window",
+            "events": {
+              "onhover": {
+                "enable": true,
+                "mode": "grab"
+              },
+              "onclick": {
+                "enable": true,
+                "mode": "push"
+              },
+              "resize": true
+            },
+            "modes": {
+              "grab": {
+                "distance": 140,
+                "line_linked": {
+                  "opacity": 0.8
+                }
+              },
+              "push": {
+                "particles_nb": 4
+              }
+            }
+          },
+          "retina_detect": true
         });
-      } catch (err) {
-        console.error("Failed to load events", err);
-        document.getElementById('eventList').textContent = '❌ Failed to load events.';
       }
-    }
+      
+   
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user'));
 
-    loadEvents();
+     
+      if (token) {
+        document.getElementById('loginBtn').style.display = 'none';
+        document.getElementById('signupBtn').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'flex';
+      }
+
+      if (user && user.role === 'admin') {
+        document.getElementById('adminPageBtn').style.display = 'flex';
+      }
+
+      if (user && user.role === 'moderator') {
+        document.getElementById('moderatorPageBtn').style.display = 'flex';
+      }
+
+   
+      document.getElementById('logoutBtn').onclick = () => {
+        localStorage.clear();
+        window.location.href = 'login.html';
+      };
+
+    
+      async function loadEvents() {
+        try {
+          const res = await fetch('http://localhost:5050/api/event/list');
+          const events = await res.json();
+
+          const container = document.getElementById('eventList');
+          container.innerHTML = '';
+
+          if (events.length === 0) {
+            container.textContent = '⚠️ No events found.';
+            return;
+          }
+
+          events.forEach(event => {
+            const div = document.createElement('div');
+            div.className = 'event';
+            div.textContent = event.name;
+            div.onclick = () => {
+              if (!token) {
+                localStorage.setItem('redirectToEventId', event.id);
+                window.location.href = 'login.html';
+                return;
+              }
+
+              localStorage.setItem('selectedEventId', event.id);
+              window.location.href = 'enroll.html';
+            };
+            container.appendChild(div);
+          });
+        } catch (err) {
+          console.error("Failed to load events", err);
+          document.getElementById('eventList').textContent = '❌ Failed to load events.';
+        }
+      }
+
+      loadEvents();
+    });
   </script>
 </body>
 </html>
