@@ -103,7 +103,6 @@
     .college-logo {
       height: 80px;
       width: auto;
-     
       transition: all 0.3s ease;
     }
     
@@ -245,6 +244,19 @@
       justify-content: center;
       color: var(--primary-blue);
       font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .event-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .event-image i {
+      position: absolute;
+      z-index: 1;
     }
     
     .event-details {
@@ -278,6 +290,18 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+    
+    .event-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background-color: var(--light-blue);
+      color: var(--primary-blue);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
     }
     
     /* Footer Styles */
@@ -557,13 +581,13 @@
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
+  <div ="particles-js"></div>
   
-  <!-- Shining Blue Top Header Section -->
+  
   <div class="top-header">
     <div class="header-container">
       <div class="logo-container">
-        <img src="mcet2-removebg-preview.png" alt="College Logo" class="college-logo" style="margin-right: auto; height: 90px;">
+        <img src="mcet.png" alt="College Logo" class="college-logo" style="margin-right: auto; height: 90px;">
         <div class="main-logo">
           <span>Central Portal</span>
         </div>
@@ -582,23 +606,23 @@
       <i class="fas fa-chart-bar"></i>
       <span>Dashboard</span>
     </a>
-    <a href="login.html" id="loginBtn">
+    <a href="login.html" ="loginBtn">
       <i class="fas fa-key"></i>
       <span>Login</span>
     </a>
-    <a href="signup.html" id="signupBtn">
+    <a href="signup.html" ="signupBtn">
       <i class="fas fa-user-plus"></i>
       <span>Sign Up</span>
     </a>
-    <a href="#" id="logoutBtn" style="display:none">
+    <a href="#" ="logoutBtn" style="display:none">
       <i class="fas fa-sign-out-alt"></i>
       <span>Logout</span>
     </a>
-    <a href="admin.html" id="adminPageBtn" style="display:none">
+    <a href="admin.html" ="adminPageBtn" style="display:none">
       <i class="fas fa-tools"></i>
       <span>Admin</span>
     </a>
-    <a href="moderator.html" id="moderatorPageBtn" style="display:none">
+    <a href="moderator.html" ="moderatorPageBtn" style="display:none">
       <i class="fas fa-user-shield"></i>
       <span>Moderator</span>
     </a>
@@ -614,8 +638,132 @@
       Discover and register for exciting college events. Click on any event to view details and participate.
     </p>
     
-    <div id="eventList" class="loading-events">
-      <div class="spinner"></div>
+    <div class="events-grid">
+      <!-- Creative Writing - Tales Unleashed -->
+      <div class="event-card" onclick="handleEventClick('creative-writing')">
+        <div class="event-image" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+          <i class="fas fa-pen-fancy"></i>
+        </div>
+        <div class="event-details">
+          <h3 class="event-title">Creative Writing - Tales Unleashed</h3>
+          <div class="event-date">
+            <i class="far fa-calendar-alt"></i>
+            <span>March ? 2025</span>
+          </div>
+          <p class="event-description">
+            Unleash your creativity and craft compelling stories in this writing competition. Showcase your narrative skills and imagination.
+          </p>
+          <div>
+            <span class="event-tag">Literary</span>
+            <span class="event-tag">Competition</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Project Expo -->
+      <div class="event-card" onclick="handleEventClick('project-expo')">
+        <div class="event-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+          <i class="fas fa-project-diagram"></i>
+        </div>
+        <div class="event-details">
+          <h3 class="event-title">Project Expo</h3>
+          <div class="event-date">
+            <i class="far fa-calendar-alt"></i>
+            <span>March ? 2025</span>
+          </div>
+          <p class="event-description">
+            Showcase your innovative projects and research work to peers and faculty. A platform to demonstrate your technical expertise.
+          </p>
+          <div>
+            <span class="event-tag">Technical</span>
+            <span class="event-tag">Exhibition</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Technical Quiz - Inno Quiz -->
+      <div class="event-card" onclick="handleEventClick('technical-quiz')">
+        <div class="event-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <div class="event-details">
+          <h3 class="event-title">Technical Quiz - Inno Quiz</h3>
+          <div class="event-date">
+            <i class="far fa-calendar-alt"></i>
+            <span>March ? 2025</span>
+          </div>
+          <p class="event-description">
+            Test your technical knowledge in this exciting quiz competition. Teams will compete in multiple rounds of challenging questions.
+          </p>
+          <div>
+            <span class="event-tag">Quiz</span>
+            <span class="event-tag">Technical</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Front End- Web alchemy -->
+      <div class="event-card" onclick="handleEventClick('web-alchemy')">
+        <div class="event-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+          <i class="fas fa-code"></i>
+        </div>
+        <div class="event-details">
+          <h3 class="event-title">Front End - Web Alchemy</h3>
+          <div class="event-date">
+            <i class="far fa-calendar-alt"></i>
+            <span>March ? 2025</span>
+          </div>
+          <p class="event-description">
+            Transform your ideas into beautiful web interfaces. A front-end development competition focusing on design and user experience.
+          </p>
+          <div>
+            <span class="event-tag">Web Dev</span>
+            <span class="event-tag">Competition</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Treasure Hunt-Treasure Troopers -->
+      <div class="event-card" onclick="handleEventClick('treasure-hunt')">
+        <div class="event-image" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
+          <i class="fas fa-map-marked-alt"></i>
+        </div>
+        <div class="event-details">
+          <h3 class="event-title">Treasure Hunt - Treasure Troopers</h3>
+          <div class="event-date">
+            <i class="far fa-calendar-alt"></i>
+            <span>March ? 2025</span>
+          </div>
+          <p class="event-description">
+            Embark on an exciting adventure across campus, solving clues and finding hidden treasures with your team.
+          </p>
+          <div>
+            <span class="event-tag">Adventure</span>
+            <span class="event-tag">Team Event</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Click Capture Create -->
+      <div class="event-card" onclick="handleEventClick('click-capture-create')">
+        <div class="event-image" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
+          <i class="fas fa-camera-retro"></i>
+        </div>
+        <div class="event-details">
+          <h3 class="event-title">Click Capture Create</h3>
+          <div class="event-date">
+            <i class="far fa-calendar-alt"></i>
+            <span>March ? 2025 </span>
+          </div>
+          <p class="event-description">
+            Photography and digital art competition. Capture moments, create art, and showcase your visual storytelling skills.
+          </p>
+          <div>
+            <span class="event-tag">Photography</span>
+            <span class="event-tag">Art</span>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
   
@@ -626,24 +774,25 @@
         <img src="ig.png" alt="College Logo" class="college-logo" style="margin-left: auto;">
       </div>
       <div class="footer-links">
-        <img src="mcet2-removebg-preview.png" alt="College Logo" class="college-logo" style="margin-left: auto;">
+        <img src="mcet.png" alt="College Logo" class="college-logo" style="margin-left: auto;">
       </div>
     </div>
  
     <div class="copyright">
-      &copy; 2023 Ignite . All rights reserved.
+      &copy; 2025 Ignite . All rights reserved.
     </div>
   </footer>
   
-  <a href="about.html" class="about-us-button" id="aboutBtn" title="About Us">
+  <a href="about.html" class="about-us-button" ="aboutBtn" title="About Us">
     <img src="about.png" alt="about.png" style="height: 60px;">
   </a>
 
- 
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   
   <script>
+   
 
+    
     document.addEventListener('DOMContentLoaded', function() {
       if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
@@ -736,32 +885,34 @@
         });
       }
       
-   
+      
       const token = localStorage.getItem('token');
       const user = JSON.parse(localStorage.getItem('user'));
 
-     
+      
       if (token) {
         document.getElementById('loginBtn').style.display = 'none';
         document.getElementById('signupBtn').style.display = 'none';
         document.getElementById('logoutBtn').style.display = 'flex';
       }
 
+      
       if (user && user.role === 'admin') {
         document.getElementById('adminPageBtn').style.display = 'flex';
       }
 
+      
       if (user && user.role === 'moderator') {
         document.getElementById('moderatorPageBtn').style.display = 'flex';
       }
 
-   
+      // Logout functionality
       document.getElementById('logoutBtn').onclick = () => {
         localStorage.clear();
         window.location.href = 'login.html';
       };
 
-    
+      
       async function loadEvents() {
         try {
           const res = await fetch('http://localhost:5050/api/event/list');
@@ -781,12 +932,12 @@
             div.textContent = event.name;
             div.onclick = () => {
               if (!token) {
-                localStorage.setItem('redirectToEventId', event.id);
+                localStorage.setItem('redirectToEventId', event.);
                 window.location.href = 'login.html';
                 return;
               }
 
-              localStorage.setItem('selectedEventId', event.id);
+              localStorage.setItem('selectedEventId', event.);
               window.location.href = 'enroll.html';
             };
             container.appendChild(div);
@@ -796,8 +947,6 @@
           document.getElementById('eventList').textContent = '❌ Failed to load events.';
         }
       }
-
-      loadEvents();
     });
   </script>
 </body>
