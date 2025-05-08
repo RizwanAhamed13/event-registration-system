@@ -157,21 +157,7 @@ function initFormHandling() {
     const termsCheckbox = document.querySelector('#terms');
 
     // Password toggle functionality
-    if (togglePassword && password) {
-        togglePassword.addEventListener('click', function() {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
-        });
-    }
-
-    if (toggleConfirmPassword && confirmPassword) {
-        toggleConfirmPassword.addEventListener('click', function() {
-            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPassword.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
-        });
-    }
+  
 
     // College selection logic
     function handleCollegeSelection() {
