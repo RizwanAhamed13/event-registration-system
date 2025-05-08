@@ -384,6 +384,163 @@ margin-bottom: 2px;
 padding-left: 0;
 }
 }
+.dev-button {
+            position: fixed;
+            bottom: 105px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3535d9, #67c8ff);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            
+        }
+
+        .dev-button:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(53, 53, 217, 0.5);
+        }
+
+        .dev-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Pulse animation */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(53, 53, 217, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(53, 53, 217, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(53, 53, 217, 0);
+            }
+        }
+
+        .dev-button.pulse {
+            animation: pulse 2s infinite;
+        }
+
+        
+        .dev-button::after {
+            content: "Developers";
+            position: absolute;
+            right: 70px;
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .dev-button:hover::after {
+            opacity: 1;
+            right: 75px;
+        }
+
+        
+        @media (max-width: 768px) {
+            .dev-button {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 90px;
+                right: 20px;
+            }
+        }
+    .dev-button1 {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3535d9, #67c8ff);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            
+        }
+
+        .dev-button1:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(53, 53, 217, 0.5);
+        }
+
+        .dev-button1:active {
+            transform: scale(0.95);
+        }
+
+        /* Pulse animation */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(53, 53, 217, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(53, 53, 217, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(53, 53, 217, 0);
+            }
+        }
+
+        .dev-button1.pulse {
+            animation: pulse 2s infinite;
+        }
+
+        
+        .dev-button1::after {
+            content: "About Us";
+            position: absolute;
+            right: 70px;
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .dev-button1:hover::after {
+            opacity: 1;
+            right: 75px;
+        }
+
+        
+        @media (max-width: 768px) {
+            .dev-button1 {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+  </style>
   </style>
 </head>
 <body>
@@ -465,7 +622,17 @@ padding-left: 0;
       </button>
     </div>
   </div>
-
+  <a href="developer.html">
+    <button class="dev-button pulse" >
+      <i class="fas fa-code"></i>
+   </button></a>
+   
+    <a href="about.html">
+   <button class="dev-button1 pulse" > 
+    
+      <img src="about.png" alt="about.png" style="height: 60px;">
+   </a>
+  </button>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
     particlesJS('particles-js', {
