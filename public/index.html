@@ -602,32 +602,37 @@
       <i class="fas fa-home"></i>
       <span>Home</span>
     </a>
+  
     <a href="dashboard.html">
       <i class="fas fa-chart-bar"></i>
       <span>Dashboard</span>
     </a>
-    <a href="login.html" ="loginBtn">
+  
+    <a href="login.html" id="loginBtn">
       <i class="fas fa-key"></i>
       <span>Login</span>
     </a>
-    <a href="signup.html" ="signupBtn">
+  
+    <a href="register.html" id="signupBtn">
       <i class="fas fa-user-plus"></i>
       <span>Sign Up</span>
     </a>
-    <a href="#" ="logoutBtn" style="display:none">
+  
+    <a href="#" id="logoutBtn" style="display: none;">
       <i class="fas fa-sign-out-alt"></i>
       <span>Logout</span>
     </a>
-    <a href="admin.html" ="adminPageBtn" style="display:none">
+  
+    <a href="admin.html" id="adminPageBtn" style="display: none;">
       <i class="fas fa-tools"></i>
       <span>Admin</span>
     </a>
-    <a href="moderator.html" ="moderatorPageBtn" style="display:none">
+  
+    <a href="moderator.html" id="moderatorPageBtn" style="display: none;">
       <i class="fas fa-user-shield"></i>
       <span>Moderator</span>
     </a>
   </nav>
-  
   <!-- Main Content Area -->
   <main class="main-content">
     <div class="page-header">
@@ -787,167 +792,95 @@
     <img src="about.png" alt="about.png" style="height: 60px;">
   </a>
 
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  
   <script>
-   
-
-    
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
+      // ✅ ParticleJS init
       if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
-          "particles": {
-            "number": {
-              "value": 70,
-              "density": {
-                "enable": true,
-                "value_area": 800
-              }
-            },
-            "color": {
-              "value": "#1a56db"
-            },
-            "shape": {
-              "type": "circle",
-              "stroke": {
-                "width": 0,
-                "color": "#000000"
-              }
-            },
-            "opacity": {
-              "value": 0.5,
-              "random": true,
-              "anim": {
-                "enable": false,
-                "speed": 1,
-                "opacity_min": 0.1,
-                "sync": false
-              }
-            },
-            "size": {
-              "value": 3,
-              "random": true,
-              "anim": {
-                "enable": false,
-                "speed": 40,
-                "size_min": 0.1,
-                "sync": false
-              }
-            },
-            "line_linked": {
-              "enable": true,
-              "distance": 150,
-              "color": "#1a56db",
-              "opacity": 0.3,
-              "width": 1
-            },
-            "move": {
-              "enable": true,
-              "speed": 1.5,
-              "direction": "none",
-              "random": false,
-              "straight": false,
-              "out_mode": "out",
-              "bounce": false,
-              "attract": {
-                "enable": false,
-                "rotateX": 600,
-                "rotateY": 1200
-              }
+          particles: {
+            number: { value: 70, density: { enable: true, value_area: 800 } },
+            color: { value: "#1a56db" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5, random: true },
+            size: { value: 3, random: true },
+            line_linked: { enable: true, distance: 150, color: "#1a56db", opacity: 0.3, width: 1 },
+            move: {
+              enable: true,
+              speed: 1.5,
+              direction: "none",
+              random: false,
+              straight: false,
+              out_mode: "out",
+              bounce: false
             }
           },
-          "interactivity": {
-            "detect_on": "window",
-            "events": {
-              "onhover": {
-                "enable": true,
-                "mode": "grab"
-              },
-              "onclick": {
-                "enable": true,
-                "mode": "push"
-              },
-              "resize": true
+          interactivity: {
+            detect_on: "window",
+            events: {
+              onhover: { enable: true, mode: "grab" },
+              onclick: { enable: true, mode: "push" },
+              resize: true
             },
-            "modes": {
-              "grab": {
-                "distance": 140,
-                "line_linked": {
-                  "opacity": 0.8
-                }
-              },
-              "push": {
-                "particles_nb": 4
-              }
+            modes: {
+              grab: { distance: 140, line_linked: { opacity: 0.8 } },
+              push: { particles_nb: 4 }
             }
           },
-          "retina_detect": true
+          retina_detect: true
         });
       }
-      
-      
+    
+      // ✅ Role-based sidebar display
       const token = localStorage.getItem('token');
       const user = JSON.parse(localStorage.getItem('user'));
-
-      
-      if (token) {
+    
+      if (token && user) {
         document.getElementById('loginBtn').style.display = 'none';
         document.getElementById('signupBtn').style.display = 'none';
         document.getElementById('logoutBtn').style.display = 'flex';
+    
+        if (user.role === 'admin') {
+          document.getElementById('adminPageBtn').style.display = 'flex';
+        }
+    
+        if (user.role === 'moderator') {
+          document.getElementById('moderatorPageBtn').style.display = 'flex';
+        }
       }
-
-      
-      if (user && user.role === 'admin') {
-        document.getElementById('adminPageBtn').style.display = 'flex';
-      }
-
-      
-      if (user && user.role === 'moderator') {
-        document.getElementById('moderatorPageBtn').style.display = 'flex';
-      }
-
-      // Logout functionality
+    
+      // ✅ Logout handler
       document.getElementById('logoutBtn').onclick = () => {
         localStorage.clear();
         window.location.href = 'login.html';
       };
-
-      
-      async function loadEvents() {
-        try {
-          const res = await fetch('http://localhost:5050/api/event/list');
-          const events = await res.json();
-
-          const container = document.getElementById('eventList');
-          container.innerHTML = '';
-
-          if (events.length === 0) {
-            container.textContent = '⚠️ No events found.';
-            return;
-          }
-
-          events.forEach(event => {
-            const div = document.createElement('div');
-            div.className = 'event';
-            div.textContent = event.name;
-            div.onclick = () => {
-              if (!token) {
-                localStorage.setItem('redirectToEventId', event.);
-                window.location.href = 'login.html';
-                return;
-              }
-
-              localStorage.setItem('selectedEventId', event.);
-              window.location.href = 'enroll.html';
-            };
-            container.appendChild(div);
-          });
-        } catch (err) {
-          console.error("Failed to load events", err);
-          document.getElementById('eventList').textContent = '❌ Failed to load events.';
+    
+      // ✅ Map static event names to real DB IDs (replace with your actual DB event IDs)
+      const eventIdMap = {
+        "creative-writing": "evt001",
+        "project-expo": "evt002",
+        "technical-quiz": "evt003",
+        "web-alchemy": "evt004",
+        "treasure-hunt": "evt005",
+        "click-capture-create": "evt006"
+      };
+    
+      // ✅ Event click handler (used in HTML onclick)
+      window.handleEventClick = (eventKey) => {
+        const id = eventIdMap[eventKey];
+    
+        if (!id) {
+          alert("❌ Unknown event key: " + eventKey);
+          return;
         }
-      }
+    
+        if (!token) {
+          localStorage.setItem('redirectToEventId', id);
+          window.location.href = 'login.html';
+          return;
+        }
+    
+        localStorage.setItem('selectedEventId', id);
+        window.location.href = 'enroll.html';
+      };
     });
-  </script>
-</body>
-</html>
+    </script>

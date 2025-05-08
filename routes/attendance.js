@@ -14,7 +14,7 @@ router.post('/mark', verifyToken, async (req, res) => {
     // Confirm user is part of the event
     const regRes = await pool.query(`
       SELECT * FROM event_registrations
-      WHERE event_id = $1 AND participant_ids @> ARRAY[$2]::UUID[]
+      WHERE event_id = $1 AND participant_ids::text[] @> ARRAY[$2]
     `, [event_id, user_id]);
 
     if (regRes.rows.length === 0) {
@@ -70,17 +70,17 @@ router.get('/export', verifyToken, async (req, res) => {
     }
 
     const headers = ['Name', 'Email', 'Roll Number', 'Department', 'Status', 'Timestamp'];
-const csv = [
-  headers.join(','),
-  ...result.rows.map(r => [
-    r.name,
-    r.email,
-    r.roll_number,
-    r.department,
-    r.status ? 'Present' : 'Absent',
-    new Date(r.created_at).toLocaleString()
-  ].join(','))
-].join('\n');
+    const csv = [
+      headers.join(','),
+      ...result.rows.map(r => [
+        r.name,
+        r.email,
+        r.roll_number,
+        r.department,
+        r.status ? 'Present' : 'Absent',
+        new Date(r.created_at).toLocaleString()
+      ].join(','))
+    ].join('\n');
 
     res.header('Content-Type', 'text/csv');
     res.attachment(`attendance_${event_id}.csv`);

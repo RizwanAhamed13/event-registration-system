@@ -372,7 +372,9 @@
       <select id="eventSelect">
         <option value="">-- Select Event --</option>
       </select>
-      <button class="btn btn-accent" onclick="downloadCSV()">Download CSV</button>
+      <button class="btn btn-accent" id="downloadBtn" onclick="downloadCSV()">
+        <span class="btn-text">Download CSV</span>
+      </button>
     </div>
   </div>
 
@@ -410,52 +412,58 @@
     const token = localStorage.getItem('token');
 
     async function markAttendance() {
-      const btn = document.querySelector('.Btn-Container');
-      const btnText = btn.querySelector('.btn-text');
-      const resultDiv = document.getElementById('result');
-      
-      btn.classList.add('loading');
-      btnText.textContent = 'Processing...';
-      resultDiv.style.display = 'none';
-      
-      const input = document.getElementById('qrData').value;
-      
-      try {
-        const parsed = JSON.parse(input);
-        const { event_id, participant_id } = parsed;
+  const btn = document.querySelector('.Btn-Container');
+  const btnText = btn.querySelector('.text');
+  const resultDiv = document.getElementById('result');
+  const token = localStorage.getItem('token');
 
-        const res = await fetch('http://localhost:5050/api/moderator/attendance', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            event_id,
-            user_id: participant_id,
-            status: true
-          })
-        });
+  btn.classList.add('loading');
+  btnText.textContent = 'Processing...';
+  resultDiv.style.display = 'none';
 
-        const data = await res.json();
-        
-        if (res.ok) {
-          resultDiv.className = 'success';
-          resultDiv.innerHTML = `✅ ${data.msg}<br><small>Participant ID: ${participant_id}</small>`;
-        } else {
-          resultDiv.className = 'error';
-          resultDiv.textContent = `❌ ${data.msg || 'Error marking attendance'}`;
-        }
-      } catch (err) {
-        resultDiv.className = 'error';
-        resultDiv.textContent = "❌ Invalid QR data format or connection error";
-        console.error(err);
-      } finally {
-        btn.classList.remove('loading');
-        btnText.textContent = 'Mark Attendance';
-        resultDiv.style.display = 'block';
-      }
+  const input = document.getElementById('qrData').value;
+
+  try {
+    const parsed = JSON.parse(input);
+    const { event_id, participant_id } = parsed;
+
+    if (!event_id || !participant_id) {
+      throw new Error("QR code missing event_id or participant_id");
     }
+
+    const res = await fetch('http://localhost:5050/api/attendance/mark', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify({
+    event_id,             // Must be a valid UUID, e.g. "d0c4072d-e4d5-47a2-a840-5945b1cc237e"
+    user_id: participant_id, // Also a valid UUID
+    status: true
+  })
+});
+    const data = await res.json();
+
+    if (res.ok) {
+      resultDiv.className = 'success';
+      resultDiv.innerHTML = `✅ ${data.msg}<br><small>Participant ID: ${participant_id}</small>`;
+    } else {
+      resultDiv.className = 'error';
+      resultDiv.textContent = `❌ ${data.msg || 'Error marking attendance'}`;
+    }
+  } catch (err) {
+    console.error("❌ Error in markAttendance:", err.message);
+    resultDiv.className = 'error';
+    resultDiv.textContent = "❌ Invalid QR data format or connection error";
+  } finally {
+    btn.classList.remove('loading');
+    btnText.textContent = 'Mark !';
+    resultDiv.style.display = 'block';
+  }
+}
+
+
 
     async function loadEvents() {
       try {
