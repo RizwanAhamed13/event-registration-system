@@ -9,7 +9,54 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Pacifico&family=Playwrite+IN:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Press+Start+2P&family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
   <style>
+    /* Read More Styles */
+.event-description1 {
+  font-family: 'Poppins';
+  color: var(--dark-gray);
+  font-size: 0.95rem;
+  margin-bottom: 0rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only 3 lines initially */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.event-description1.expanded {
+  -webkit-line-clamp: unset; /* Remove line clamp when expanded */
+  display: block;
+}
+
+.read-more-btn {
+  background: none;
+  border: none;
+  color: var(--primary-blue);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+  display: inline-block;
+}
+
+
+.read-more-btn:hover {
+  text-decoration: underline;
+}
+
+.read-more-btn i {
+  margin-left: 0.3rem;
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.read-more-btn.expanded i {
+  transform: rotate(180deg);
+}
     /* Base Styles */
     :root {
       --primary-blue: #1a56db;
@@ -537,51 +584,170 @@
         height: 75px;
       }
     }
-    .about-us-button {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      background-color: var(--primary-blue);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 24px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      z-index: 1000;
-      transition: all 0.3s ease;
-      border: none;
-      outline: none;
-      text-decoration: none;
-    }
+    .dev-button {
+    position: fixed;
+    bottom: 105px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #3535d9, #67c8ff);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
     
-    .about-us-button:hover {
-      background-color: var(--dark-blue);
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dev-button:hover {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 8px 25px rgba(53, 53, 217, 0.5);
+}
+
+.dev-button:active {
+    transform: scale(0.95);
+}
+
+/* Pulse animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(53, 53, 217, 0.7);
     }
-    
-    .about-us-button:active {
-      transform: scale(0.95);
+    70% {
+        box-shadow: 0 0 0 15px rgba(53, 53, 217, 0);
     }
+    100% {
+        box-shadow: 0 0 0 0 rgba(53, 53, 217, 0);
+    }
+}
+
+.dev-button.pulse {
+    animation: pulse 2s infinite;
+}
+
+
+.dev-button::after {
+    content: "Developers";
+    position: absolute;
+    right: 70px;
+    white-space: nowrap;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.dev-button:hover::after {
+    opacity: 1;
+    right: 75px;
+}
+
+
+@media (max-width: 768px) {
+    .dev-button {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 90px;
+        right: 20px;
+    }
+}
+.dev-button1 {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #3535d9, #67c8ff);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
     
-    @media (max-width: 768px) {
-      .about-us-button {
+}
+
+.dev-button1:hover {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 8px 25px rgba(53, 53, 217, 0.5);
+}
+
+.dev-button1:active {
+    transform: scale(0.95);
+}
+
+/* Pulse animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(53, 53, 217, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(53, 53, 217, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(53, 53, 217, 0);
+    }
+}
+
+.dev-button1.pulse {
+    animation: pulse 2s infinite;
+}
+
+
+.dev-button1::after {
+    content: "About Us";
+    position: absolute;
+    right: 70px;
+    white-space: nowrap;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.dev-button1:hover::after {
+    opacity: 1;
+    right: 75px;
+}
+
+
+@media (max-width: 768px) {
+    .dev-button1 {
         width: 50px;
         height: 50px;
         font-size: 20px;
         bottom: 20px;
         right: 20px;
-      }
     }
+}
+.event-description1{
+  font-family: 'Poppins';
+}
+
   </style>
 </head>
 <body>
-  <div ="particles-js"></div>
+  <div id="particles-js"></div>
   
   
   <div class="top-header">
@@ -652,12 +818,18 @@
         <div class="event-details">
           <h3 class="event-title">Creative Writing - Tales Unleashed</h3>
           <div class="event-date">
-            <i class="far fa-calendar-alt"></i>
-            <span>March ? 2025</span>
+            <i class="far fa-clock"></i>
+            <span style="margin-right: 1.5rem;font-size:15px ;">March ? 2025</span>
+            <i class="fas fa-university" style="font-size:15px ;"></i>
+            <span style="font-size:15px ;">Venue: ?</span>
+
           </div>
-          <p class="event-description">
-            Unleash your creativity and craft compelling stories in this writing competition. Showcase your narrative skills and imagination.
-          </p>
+          <p class="event-description1" >
+            Unleash your imagination through words that captivate, inspire, and transport readers to new worlds.
+            Craft compelling stories from famous stories around the world,that leave a lasting impact.
+            Showcase the magic of creativity blended with literary flair.
+            
+          </p><br>
           <div>
             <span class="event-tag">Literary</span>
             <span class="event-tag">Competition</span>
@@ -673,12 +845,17 @@
         <div class="event-details">
           <h3 class="event-title">Project Expo</h3>
           <div class="event-date">
-            <i class="far fa-calendar-alt"></i>
-            <span>March ? 2025</span>
+            <i class="far fa-clock"></i>
+            <span style="margin-right: 1.5rem;font-size:15px ;">March ? 2025</span>
+            <i class="fas fa-university" style="font-size:15px ;"></i>
+            <span style="font-size:15px ;">Venue: ?</span>
           </div>
-          <p class="event-description">
-            Showcase your innovative projects and research work to peers and faculty. A platform to demonstrate your technical expertise.
-          </p>
+          <p class="event-description1">
+            Present innovative projects that blend technical brilliance with real-world solutions.
+            Display your ideas, prototypes, or research to impress judges and peers alike.
+            A platform to shine with creativity, innovation, and engineering prowess.
+            
+          </p><br>
           <div>
             <span class="event-tag">Technical</span>
             <span class="event-tag">Exhibition</span>
@@ -694,12 +871,17 @@
         <div class="event-details">
           <h3 class="event-title">Technical Quiz - Inno Quiz</h3>
           <div class="event-date">
-            <i class="far fa-calendar-alt"></i>
-            <span>March ? 2025</span>
+            <i class="far fa-clock"></i>
+            <span style="margin-right: 1.5rem;font-size:15px ;">March ? 2025</span>
+            <i class="fas fa-university" style="font-size:15px ;"></i>
+            <span style="font-size:15px ;">Venue: ?</span>
           </div>
-          <p class="event-description">
-            Test your technical knowledge in this exciting quiz competition. Teams will compete in multiple rounds of challenging questions.
-          </p>
+          <p class="event-description1">
+            Test your technical knowledge across diverse domains in a fast-paced quiz battle.
+            Compete with sharp minds and challenge your problem-solving skills.
+            A thrilling race of wit, speed, and innovation.
+            
+          </p><br>
           <div>
             <span class="event-tag">Quiz</span>
             <span class="event-tag">Technical</span>
@@ -715,12 +897,17 @@
         <div class="event-details">
           <h3 class="event-title">Front End - Web Alchemy</h3>
           <div class="event-date">
-            <i class="far fa-calendar-alt"></i>
-            <span>March ? 2025</span>
+            <i class="far fa-clock"></i>
+            <span style="margin-right: 1.5rem;font-size:15px ;">March ? 2025</span>
+            <i class="fas fa-university" style="font-size:15px ;"></i>
+            <span style="font-size:15px ;">Venue: ?</span>
           </div>
-          <p class="event-description">
-            Transform your ideas into beautiful web interfaces. A front-end development competition focusing on design and user experience.
-          </p>
+          <p class="event-description1">
+            Transform ideas into stunning, functional web interfaces with creative front-end magic.
+Show off your skills in design, responsiveness, and user experience.
+Build captivating websites that stand out in style and substance.
+
+          </p><br>
           <div>
             <span class="event-tag">Web Dev</span>
             <span class="event-tag">Competition</span>
@@ -736,12 +923,17 @@
         <div class="event-details">
           <h3 class="event-title">Treasure Hunt - Treasure Troopers</h3>
           <div class="event-date">
-            <i class="far fa-calendar-alt"></i>
-            <span>March ? 2025</span>
+            <i class="far fa-clock"></i>
+            <span style="margin-right: 1.5rem;font-size:15px ;">March ? 2025</span>
+            <i class="fas fa-university" style="font-size:15px ;"></i>
+            <span style="font-size:15px ;">Venue: ?</span>
           </div>
-          <p class="event-description">
-            Embark on an exciting adventure across campus, solving clues and finding hidden treasures with your team.
-          </p>
+          <p class="event-description1">
+            Embark on an adventurous quest packed with puzzles, clues, and surprises.
+Race against time and teams to uncover hidden treasures.
+A test of teamwork, strategy, and sharp thinking.
+
+          </p><br>
           <div>
             <span class="event-tag">Adventure</span>
             <span class="event-tag">Team Event</span>
@@ -757,12 +949,16 @@
         <div class="event-details">
           <h3 class="event-title">Click Capture Create</h3>
           <div class="event-date">
-            <i class="far fa-calendar-alt"></i>
-            <span>March ? 2025 </span>
+            <i class="far fa-clock"></i>
+            <span style="margin-right: 1.5rem;font-size:15px ;">March ? 2025</span>
+            <i class="fas fa-university" style="font-size:15px ;"></i>
+            <span style="font-size:15px ;">Venue: ?</span>
           </div>
-          <p class="event-description">
-            Photography and digital art competition. Capture moments, create art, and showcase your visual storytelling skills.
-          </p>
+          <p class="event-description1">
+            Tell a powerful story through the lens of your camera.
+            Weave emotion, message, and creativity into a compelling photo narrative.
+            Capture moments that speak louder than words.
+          </p><br>
           <div>
             <span class="event-tag">Photography</span>
             <span class="event-tag">Art</span>
@@ -788,13 +984,23 @@
     </div>
   </footer>
   
-  <a href="about.html" class="about-us-button" ="aboutBtn" title="About Us">
-    <img src="about.png" alt="about.png" style="height: 60px;">
-  </a>
+  <a href="developer.html">
+    <button class="dev-button pulse" >
+      <i class="fas fa-code"></i>
+   </button></a>
+   
+    <a href="about.html">
+   <button class="dev-button1 pulse" > 
+    
+      <img src="about.png" alt="about.png" style="height: 60px;">
+   </a>
+  </button>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       // ✅ ParticleJS init
+      setupReadMoreButtons();
       if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
           particles: {
@@ -883,4 +1089,30 @@
         window.location.href = 'enroll.html';
       };
     });
-    </script>
+    function setupReadMoreButtons() {
+  document.querySelectorAll('.event-card').forEach(card => {
+    const description = card.querySelector('.event-description1');
+    const detailsContainer = card.querySelector('.event-details');
+    
+    
+    if (description && !card.querySelector('.read-more-btn')) {
+      const btn = document.createElement('button');
+      btn.className = 'read-more-btn';
+      btn.innerHTML = 'Read More ';
+      
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        description.classList.toggle('expanded');
+        btn.classList.toggle('expanded');
+        btn.innerHTML = description.classList.contains('expanded') 
+          ? 'Read Less ' 
+          : 'Read More ';
+      });
+      
+      
+      description.insertAdjacentElement('afterend', btn);
+    }
+  });
+}
+
+  </script>
