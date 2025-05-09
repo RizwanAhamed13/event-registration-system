@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ignite Members</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #3535d9;
+            --secondary-color: #67c8ff;
+            --accent-color: #ff568e;
+            --faculty-color: #294bb9;
+            --student-color: #84c8e7;
+            --president-color: #f9bf43;
+            --dark-bg: #ffffff;
+            --light-bg: #f7f7fa;
+            --text-color: #333;
+            --card-radius: 15px;
+            --glow-color: rgba(103, 200, 255, 0.6);
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+        
+        .animated-header {
+            position: relative;
+            text-align: center;
+            padding: 80px 0 40px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(53, 53, 217, 0.9) 0%, rgba(103, 200, 255, 0.9) 100%);
+            margin-bottom: 120px;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+            animation: headerGradient 8s infinite alternate;
+        }
+        
+        @keyframes headerGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .glowing-text {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            color: white;
+            animation: textGlow 2s infinite alternate;
+        }
+        
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(103, 200, 255, 0.3); }
+            100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(103, 200, 255, 0.6), 0 0 30px rgba(103, 200, 255, 0.4); }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            color: white;
+        }
+        
+        /* Updated Top Profile Section */
+        .top-profile {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: -80px;
+            margin-bottom: 120px;
+            z-index: 5;
+        }
+        
+        .profile-frame {
+            position: relative;
+            width: 300px;
+            height: 350px;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            background: #fff;
+        }
+        
+        .top-profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--card-radius);
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .profile-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+            color: white;
+            transform: translateZ(20px);
+        }
+        
+        .profile-title h2 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .profile-title p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px);
+            background: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(103, 200, 255, 0.4);
+        }
+        
+        .linkedin:hover { background: #0077b5; }
+        .twitter:hover { background: #1da1f2; }
+        .email:hover { background: #ea4335; }
+        
+        .members-section {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            color: #3535d9;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+        }
+        
+        .profile-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            perspective: 1000px;
+        }
+        
+        .profile-card {
+            width: 100%;
+            height: 320px;
+            border-radius: var(--card-radius);
+            perspective: 1000px;
+            cursor: pointer;
+            background: #fff;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            border-radius: var(--card-radius);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(53, 53, 217, 0.1);
+        }
+        
+        .profile-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+        }
+        
+        .card-front {
+            background-color: #fff;
+        }
+        
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .profile-card:hover .card-front img {
+            transform: scale(1.05);
+        }
+        
+        .card-back {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-color);
+            background: #fff;
+            transform: rotateY(180deg);
+            text-align: center;
+        }
+        
+        .faculty-card .card-back {
+            background: linear-gradient(135deg, rgba(41, 75, 185, 0.9), rgba(103, 200, 255, 0.8));
+            border: 2px solid var(--faculty-color);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(41, 75, 185, 0.2);
+        }
+        
+        .student-card .card-back {
+            background: linear-gradient(135deg, rgba(132, 200, 231, 0.9), rgba(53, 53, 217, 0.8));
+            border: 2px solid var(--student-color);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(53, 53, 217, 0.2);
+        }
+        
+        .card-back h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .card-back h3::after {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #fff;
+            margin: 10px auto;
+        }
+        
+        .card-back p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
+        .card-back .social-icons {
+            margin-top: 15px;
+        }
+        
+        .slogan-section {
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 0 20px;
+        }
+        
+        .expandable-card {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            gap: 5px;
+            background: #f7f7fa;
+            padding: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .expandable-card p {
+            height: 100%;
+            flex: 1;
+            overflow: hidden;
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+            background-position: center;
+            background-size: cover;
+        }
+        
+        .expandable-card p:nth-child(1) {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZWR1Y2F0aW9ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60');
+        }
+        
+        .expandable-card p:nth-child(2) {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8ZWR1Y2F0aW9ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60');
+        }
+        
+        .expandable-card p:nth-child(3) {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGVkdWNhdGlvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60');
+        }
+        
+        .expandable-card p:hover {
+            flex: 6;
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 10px 30px rgba(255, 86, 142, 0.3);
+        }
+        
+        .expandable-card p span {
+            min-width: 14em;
+            padding: 0.5em;
+            text-align: center;
+            transform: rotate(-90deg);
+            transition: all 0.5s ease-in-out;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            letter-spacing: 0.1em;
+            font-size: 1.2rem;
+            font-weight: 700;
+            position: absolute;
+            left: 0;
+            top: 45%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .expandable-card p:hover span {
+            transform: rotate(0);
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .social-float {
+            position: fixed;
+            right: 30px;
+            top: 40%;
+            z-index: 100;
+        }
+        
+        .instagram-card {
+            background-color: none;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .instagram-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 86, 142, 0.2);
+        }
+        
+        .instagram-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #d6249f;
+        }
+        
+        .instagram-card strong {
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .instagram-link {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            color: white;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            transform: translateY(5px);
+            opacity: 0.9;
+        }
+        
+        .instagram-link:hover {
+            transform: translateY(0);
+            opacity: 1;
+            box-shadow: 0 0 15px rgba(214, 36, 159, 0.6);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .profile-container {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .glowing-text {
+                font-size: 2.8rem;
+            }
+            
+            .social-float {
+                right: 20px;
+            }
+            
+            .profile-frame {
+                width: 280px;
+                height: 480px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .animated-header {
+                padding: 60px 0 40px;
+                margin-bottom: 100px;
+            }
+            
+            .glowing-text {
+                font-size: 2.2rem;
+            }
+            
+            .top-profile {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+                margin-bottom: 80px;
+            }
+            
+            .profile-frame {
+                width: 280px;
+                height: 300px;
+            }
+            
+            .profile-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .expandable-card {
+                height: 350px;
+                flex-direction: column;
+            }
+            
+            .expandable-card p span {
+                transform: rotate(0);
+            }
+            
+            .expandable-card p:hover {
+                flex: 3;
+            }
+            
+            .social-float {
+                position: static;
+                display: flex;
+                justify-content: center;
+                margin: 50px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .glowing-text {
+                font-size: 1.8rem;
+            }
+            
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-frame {
+                width: 90%;
+                max-width: 300px;
+                height: 450px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .profile-frame {
+                height: 380px;
+            }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        [data-aos] {
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .profile-card {
+            animation: pulse 2s infinite;
+            animation-play-state: paused;
+        }
+        
+        .profile-card:hover {
+            animation-play-state: running;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(103, 200, 255, 0.2); }
+            70% { box-shadow: 0 0 0 10px rgba(103, 200, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(103, 200, 255, 0); }
+        }
+        
+        .copyright-footer {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 1.5rem 0;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .footer-content p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <header class="animated-header">
+        <div class="header-content">
+            <h1 class="glowing-text">Our Members</h1>
+            <p class="subtitle">Ignite</p>
+        </div>
+    </header>
+
+    <!-- Top Profile Cards - Side by Side on Desktop, Stacked on Mobile -->
+    <div class="top-profile" data-aos="zoom-in" data-aos-duration="1200">
+        <div class="profile-frame">
+            <img src="general-img-portrait.png" alt="President" class="top-profile-img">
+            <div class="profile-title">
+                <h2>Faculty Head</h2>
+                <p>Chitra.L</p>
+                <div class="social-icons"> 
+                    <a href="#" class="social-icon linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-frame">
+            <img src="general-img-portrait.png" alt="President" class="top-profile-img">
+            <div class="profile-title">
+                <h2>Faculty Head</h2>
+                <p>SaravanaKumar</p>
+                <div class="social-icons"> 
+                    <a href="#" class="social-icon linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest of your HTML content remains the same -->
+    <br><br><br>
+    
+    <!-- Faculty Members Section -->
+    <section class="members-section">
+        <h2 class="section-title" data-aos="fade-right">Faculty Coordinators</h2>
+        <div class="profile-container">
+            <!-- Faculty Profile Cards -->
+            <div class="profile-card faculty-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="general-img-portrait.png" alt="Prof. Rajesh Kumar">
+                    </div>
+                    <div class="card-back">
+                        <h3>SenthilKumar</h3>
+                        <p>Chief Coordinator</p>
+                        <div class="social-icons">
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other faculty cards... -->
+            <div class="profile-card faculty-card" data-aos="fade-up" data-aos-delay="200">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="general-img-portrait.png" alt="Dr. Anitha Menon">
+                  </div>
+                  <div class="card-back">
+                      <h3></h3>
+                      <p>Faculty Advisor</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                         
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+         
+
+          <div class="profile-card faculty-card" data-aos="fade-up" data-aos-delay="400">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="general-img-portrait.png" alt="Dr. Priya Sebastian">
+                  </div>
+                  <div class="card-back">
+                      <h3>Dr. -------</h3>
+                      <p>Coordinator</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+      
+        </div>
+    </section>
+
+    <!-- Student Members Section -->
+    <section class="members-section">
+        <h2 class="section-title" data-aos="fade-right">Student Members</h2>
+        <br><br><br><br>
+        
+        <div class="top-profile" data-aos="zoom-in" data-aos-duration="1200">
+            <div class="profile-frame">
+                <img src="/members/president.jpg" alt="President" class="top-profile-img">
+                <div class="profile-title">
+                    <h2>President</h2>
+                    <p>Raghavi</p>
+                    <div class="social-icons">
+                        <a href="" class="social-icon linkedin">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                       
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="profile-frame">
+                <img src="riz.jpg" alt="President" class="top-profile-img">
+                <div class="profile-title">
+                    <h2>Vice President</h2>
+                    <p>Riwan Ahamed</p>
+                    <div class="social-icons">
+                        <a href="https://www.linkedin.com/in/rizwan-ahamed-7b236832a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-icon linkedin">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                       
+                        <a href="https://www.instagram.com/rizwan__ahamed13?igsh=bHJnZXBsZjk1bnF1" class="social-icon email">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+        
+        <div class="profile-container">
+            
+           
+          <!-- student cards -->
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="200">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="general-img-portrait.png" alt="Student 2">
+                  </div>
+                  <div class="card-back">
+                      <h3>Viveaga</h3>
+                      <p>Treasurer</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                          
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="300">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="members/sec.jpg" alt="Student 3">
+                  </div>
+                  <div class="card-back">
+                      <h3>Sushmithra</h3>
+                      <p>Secretary</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                          
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="general-img-portrait.png" alt="Student 3">
+                </div>
+                <div class="card-back">
+                    <h3>Pragadheeshwari</h3>
+                    <p>Joint-Secretary</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                       
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="general-img-portrait.png" alt="Student 4">
+                  </div>
+                  <div class="card-back">
+                      <h3>Mukesh</h3>
+                      <p>Co-curricular Activity Coordinator</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                          
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="general-img-portrait.png" alt="Student 4">
+                  </div>
+                  <div class="card-back">
+                      <h3>Kishan Patel</h3>
+                      <p>Co-curricular Activity Coordinator</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="general-img-portrait.png" alt="Student 4">
+                  </div>
+                  <div class="card-back">
+                      <h3>Keshika</h3>
+                      <p>Extra Curricular Coordinator</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                         
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="members/abinandhana.jpg" alt="Student 4">
+                  </div>
+                  <div class="card-back">
+                      <h3>Abinandhana</h3>
+                      <p>Extra Curricular Coordinator</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                          
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="general-img-portrait.png" alt="Student 4">
+                  </div>
+                  <div class="card-back">
+                      <h3>Sanmuga Priya</h3>
+                      <p>Linguistics Ambassador</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                         
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+              <div class="card-inner">
+                  <div class="card-front">
+                      <img src="general-img-portrait.png" alt="Student 4">
+                  </div>
+                  <div class="card-back">
+                      <h3>Varsha</h3>
+                      <p>Linguistics Ambassador</p>
+                      <div class="social-icons">
+                          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                          
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="general-img-portrait.png" alt="Student 4">
+                </div>
+                <div class="card-back">
+                    <h3>Lakkitha</h3>
+                    <p>IT - Wings</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                       
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="card-inner">
+              <div class="card-front">
+                  <img src="general-img-portrait.png" alt="Student 4">
+              </div>
+              <div class="card-back">
+                  <h3>Hanush Dhilothuma</h3>
+                  <p>IT - Wings</p>
+                  <div class="social-icons">
+                      <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                      
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="card-inner">
+            <div class="card-front">
+                <img src="general-img-portrait.png" alt="Student 4">
+            </div>
+            <div class="card-back">
+                <h3>Dhaksinash Sai</h3>
+                <p>IT - Wings</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+      <div class="card-inner">
+          <div class="card-front">
+              <img src="general-img-portrait.png" alt="Student 4">
+          </div>
+          <div class="card-back">
+              <h3>Nikshitha</h3>
+              <p>IT - Wings</p>
+              <div class="social-icons">
+                  <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                  
+                  </a>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="profile-card student-card" data-aos="fade-up" data-aos-delay="400">
+    <div class="card-inner">
+        <div class="card-front">
+            <img src="general-img-portrait.png" alt="Student 4">
+        </div>
+        <div class="card-back">
+            <h3>Vijay Adhhithya</h3>
+            <p>IT - Wings</p>
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+               
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+          
+        </div>
+    </section>
+
+    <section class="slogan-section">
+        <div class="expandable-card" data-aos="fade-up">
+            <p><span>WE </span></p>
+            <p><span>ARE HERE </span></p>
+            <p><span>TO HELP YOU</span></p>
+        </div>
+    </section>
+
+    <div class="social-float">
+        
+            <div class="icon"></div>
+           
+            <a href="https://www.instagram.com/" target="_blank" class="instagram-link" style="text-decoration: none;">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
+    </div>
+
+    <footer class="copyright-footer">
+        <div class="container">  
+            <div class="footer-content">
+                <img src="ig.png" style="height: 100px;margin-right:40px;">
+                <p>&copy; <span id="year"></span> Ignite. All Rights Reserved.</p>
+                <div class="footer-links"></div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: false
+            });
+
+            VanillaTilt.init(document.querySelectorAll(".profile-card"), {
+                max: 15,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.3,
+            });
+
+            particlesJS("particles-js", {
+                particles: {
+                    number: { value: 60, density: { enable: true, value_area: 1000 } },
+                    color: { value: "#3535d9" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.4, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#67c8ff",
+                        opacity: 0.3,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: { distance: 100, duration: 0.4 },
+                        push: { particles_nb: 4 }
+                    }
+                },
+                retina_detect: true
+            });
+            
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
