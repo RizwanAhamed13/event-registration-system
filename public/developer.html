@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Our Team | Elite Developers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #3535d9;
+            --secondary-color: #67c8ff;
+            --accent-color: #ff568e;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+            --text-color: #ffffff;
+            --neon-glow: 0 0 10px #67c8ff, 0 0 20px #67c8ff, 0 0 30px #3535d9;
+            --card-glow: 0 0 30px rgba(103, 200, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--darker-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            touch-action: manipulation;
+        }
+
+       
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            background: var(--darker-bg);
+            transition: opacity 1s ease;
+        }
+
+        .code-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.2;
+            overflow: hidden;
+        }
+
+        .code-line {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            color: rgba(103, 200, 255, 0.5);
+            white-space: nowrap;
+            animation: scrollCode 15s linear infinite;
+        }
+
+        @keyframes scrollCode {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100%); }
+        }
+
+        .preloader-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .preloader-title {
+            font-size: clamp(3rem, 12vw, 6rem);
+            font-weight: 700;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #67c8ff, #ff568e, #3535d9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+            animation: textPulse 3s infinite alternate;
+            margin-bottom: 5vh;
+            position: relative;
+        }
+
+        .preloader-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 4px;
+            background: linear-gradient(90deg, #67c8ff, #ff568e, #3535d9);
+            box-shadow: var(--neon-glow);
+        }
+
+        @keyframes textPulse {
+            0% { opacity: 0.8; text-shadow: 0 0 10px rgba(103, 200, 255, 0.5); }
+            100% { opacity: 1; text-shadow: 0 0 25px #67c8ff, 0 0 50px #3535d9; }
+        }
+
+        .loading-bar {
+            width: clamp(300px, 70vw, 600px);
+            height: 6px;
+            background: rgba(103, 200, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #67c8ff, #3535d9);
+            border-radius: 3px;
+            animation: loading 2.5s ease-in-out forwards;
+            box-shadow: var(--neon-glow);
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            70% { width: 90%; }
+            100% { width: 100%; }
+        }
+
+        .loading-text {
+            margin-top: 3vh;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: rgba(103, 200, 255, 0.8);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+      
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+       
+        .main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        
+        .header-section {
+            position: relative;
+            text-align: center;
+            padding: 20vh 0 15vh;
+            background: rgba(10, 10, 26, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(103, 200, 255, 0.2);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+            overflow: hidden;
+        }
+
+        .border-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--secondary-color), 
+                var(--secondary-color), 
+                transparent);
+            background-size: 200% 100%;
+            animation: borderFlow 3s linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .main-title {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 700;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #67c8ff, #ff568e, #3535d9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+            animation: textPulse 3s infinite alternate;
+            margin-bottom: 3vh;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 5vw;
+            padding: 10vh 5vw;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .team-card {
+            position: relative;
+            height: 500px;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--card-glow);
+            background: linear-gradient(145deg, #0f0f2d, #1a1a4a);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .card-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            z-index: 3;
+        }
+
+        .dev-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--secondary-color);
+            box-shadow: var(--card-glow);
+            filter: grayscale(0%) contrast(100%);
+            z-index: 2;
+            animation: imageGlow 3s infinite alternate;
+            margin-bottom: 30px;
+        }
+
+        @keyframes imageGlow {
+            0% { box-shadow: 0 0 20px rgba(103, 200, 255, 0.5); }
+            100% { box-shadow: 0 0 40px rgba(103, 200, 255, 0.9); }
+        }
+
+        .dev-name {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin: 0 0 15px 0;
+            color: var(--secondary-color);
+            text-align: center;
+            animation: textFadeIn 1s ease-out;
+            position: relative;
+            width: 100%;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+       
+        .name-animation {
+            position: relative;
+            height: 60px;
+            width: 100%;
+            overflow: visible;
+        }
+
+        .name-animation span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            opacity: 0;
+            animation: nameSwitch 6s infinite;
+            width: 100%;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .name-animation span:first-child {
+            animation-delay: 0s;
+        }
+
+        .name-animation span:last-child {
+            animation-delay: 3s;
+        }
+
+        @keyframes nameSwitch {
+            0% { opacity: 0; transform: translateY(-20px); }
+            15% { opacity: 1; transform: translateY(0); }
+            40% { opacity: 1; transform: translateY(0); }
+            50% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 0; }
+        }
+
+        .dev-role {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            margin-bottom: 25px;
+            opacity: 0.8;
+            text-align: center;
+            animation: textFadeIn 1s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+
+        .dev-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+            animation: textFadeIn 1s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .skill-tag {
+            background: rgba(103, 200, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(103, 200, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--neon-glow);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            animation: textFadeIn 1s ease-out 0.6s forwards;
+            opacity: 0;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(103, 200, 255, 0.1);
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(103, 200, 255, 0.3);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: var(--card-glow);
+        }
+
+        .linkedin { background: rgba(0, 119, 181, 0.2); }
+        .linkedin:hover { background: #0077b5 !important; }
+        .instagram { background: rgba(228, 64, 95, 0.2); }
+        .instagram:hover { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; }
+        .github { background: rgba(255, 255, 255, 0.1); }
+        .github:hover { background: #333 !important; }
+
+       
+        @media (max-width: 1200px) {
+            .team-card {
+                height: 450px;
+            }
+            
+            .dev-image {
+                width: 180px;
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 15vh 0 10vh;
+            }
+            
+            .team-container {
+                grid-template-columns: 1fr;
+                gap: 8vh;
+                padding: 8vh 5vw;
+            }
+            
+            .team-card {
+                height: 420px;
+            }
+            
+            .dev-image {
+                width: 160px;
+                height: 160px;
+                margin-bottom: 20px;
+            }
+            
+            .social-link {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .preloader-title {
+                font-size: clamp(2.5rem, 12vw, 4rem);
+            }
+            
+            .header-section {
+                padding: 12vh 0 8vh;
+            }
+            
+            .team-card {
+                height: 400px;
+            }
+            
+            .dev-image {
+                width: 140px;
+                height: 140px;
+                margin-bottom: 15px;
+            }
+            
+            .card-content {
+                padding: 30px 20px;
+            }
+            
+            .dev-name {
+                font-size: clamp(1.5rem, 5vw, 2rem);
+            }
+            
+            .name-animation {
+                height: 50px;
+            }
+            
+            .dev-role {
+                font-size: 1rem;
+            }
+            
+            .skill-tag {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="code-background" id="codeBackground"></div>
+        <div class="preloader-content">
+            <h1 class="preloader-title">WHO ARE WE?</h1>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text"> DEVELOPERS...</p>
+        </div>
+    </div>
+
+   
+    <div id="particles-js"></div>
+
+   
+    <div class="main-content" id="mainContent">
+       
+        <section class="header-section">
+            <div class="border-line"></div>
+            <h1 class="main-title">OUR DEVELOPERS</h1>
+            <p class="subtitle">Meet the brilliant minds behind our digital innovations</p>
+        </section>
+
+      
+        <div class="team-container">
+          
+            <div class="team-card">
+                <div class="card-content">
+                    <img src="riz.jpg" alt="Rizwan Ahamed" class="dev-image">
+                    <h2 class="dev-name">Rizwan Ahamed</h2>
+                    
+                    <div class="dev-skills">
+                        
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                       
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/rizwan-ahamed-7b236832a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-link linkedin"  style="text-decoration: none;"><i class="fab fa-linkedin-in"  style="text-decoration: none;"></i></a>
+                        <a href="https://www.instagram.com/rizwan__ahamed13?igsh=bHJnZXBsZjk1bnF1" class="social-link instagram"  style="text-decoration: none;"><i class="fab fa-instagram"  style="text-decoration: none;"  style="text-decoration: none;"></i></a>
+                        <a href="https://wa.me/917708959715" class="social-link github"  style="text-decoration: none;"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="team-card">
+                <div class="card-content">
+                    <img src="lalith.jpg" alt="Lalith Kishore" class="dev-image">
+                    <h2 class="dev-name name-animation">
+                        <span>Lalith Kishore</span>
+                        <span>L K</span>
+                    </h2>
+                   
+                    <div class="dev-skills">
+                        <span class="skill-tag">React</span>
+                      
+                        <span class="skill-tag">Three.js</span>
+                        
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/lalithkishore-c-453a70330?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-link linkedin"  style="text-decoration: none;"><i class="fab fa-linkedin-in" style="text-decoration: none;"  style="text-decoration: none;"></i></a>
+                        <a href="https://www.instagram.com/lalith___lk?igsh=MTQxODFsZWxueWVvYQ==" class="social-link instagram"  style="text-decoration: none;"><i class="fab fa-instagram"  style="text-decoration: none;"  style="text-decoration: none;"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="card-content">
+                    <img src="" alt="" class="dev-image">
+                    <h2 class="dev-name"></h2>
+                    
+                    <div class="dev-skills">
+                        
+                        <span class="skill-tag"></span>
+                        <span class="skill-tag"></span>
+                       
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/rizwan-ahamed-7b236832a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-link linkedin"  style="text-decoration: none;"><i class="fab fa-linkedin-in"  style="text-decoration: none;"></i></a>
+                        <a href="https://www.instagram.com/rizwan__ahamed13?igsh=bHJnZXBsZjk1bnF1" class="social-link instagram"  style="text-decoration: none;"><i class="fab fa-instagram"  style="text-decoration: none;"  style="text-decoration: none;"></i></a>
+                        <a href="https://wa.me/917708959715" class="social-link github"  style="text-decoration: none;"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       
+        const codeLines = [
+            "const team = { developers: ['Rizwan', 'Lalith'] };",
+            "function createAwesome() { return 'Innovation'; }",
+            "import { creativity } from 'core-skills';",
+            "export default function Developer() { return <Code />; }",
+            "while(alive) { keepCoding(); }",
+            "class Team extends React.Component { render() {...} }",
+            "// We build digital experiences",
+            "npm install success --save-dev",
+            "git push origin masterpiece",
+            "const solutions = problems.map(p => fix(p));"
+        ];
+
+        const codeBackground = document.getElementById('codeBackground');
+        
+        function createCodeLine() {
+            const line = document.createElement('div');
+            line.className = 'code-line';
+            line.textContent = codeLines[Math.floor(Math.random() * codeLines.length)];
+            line.style.left = `${Math.random() * 90}%`;
+            line.style.animationDuration = `${10 + Math.random() * 15}s`;
+            line.style.animationDelay = `-${Math.random() * 5}s`;
+            line.style.fontSize = `${0.8 + Math.random() * 0.6}rem`;
+            codeBackground.appendChild(line);
+            
+           
+            setTimeout(() => {
+                line.remove();
+            }, 25000);
+        }
+
+        for (let i = 0; i < 20; i++) {
+            createCodeLine();
+        }
+
+        
+        const codeInterval = setInterval(createCodeLine, 800);
+
+       
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": ["#67c8ff", "#3535d9", "#ff568e"]
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 2,
+                        "size_min": 1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#67c8ff",
+                    "opacity": 0.4,
+                    "width": 1.5,
+                    "shadow": {
+                        "enable": true,
+                        "blur": 5,
+                        "color": "#67c8ff"
+                    }
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 3,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": true,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "bubble"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "bubble": {
+                        "distance": 200,
+                        "size": 6,
+                        "duration": 2,
+                        "opacity": 0.8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // Simulate loading completion
+        setTimeout(() => {
+            // Fade out preloader
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            preloader.style.transition = 'opacity 1s ease';
+            
+            // Stop generating code lines
+            clearInterval(codeInterval);
+            
+            // Remove preloader and show main content
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                const mainContent = document.getElementById('mainContent');
+                mainContent.style.display = 'block';
+                setTimeout(() => {
+                    mainContent.style.opacity = '1';
+                }, 100);
+            }, 1000);
+        }, 3000); // Adjust this time to match your actual loading time
+
+        // Prevent zooming on mobile
+        document.addEventListener('touchmove', function(e) {
+            if (e.scale !== 1) { e.preventDefault(); }
+        }, { passive: false });
+    </script>
+</body>
+</html>
